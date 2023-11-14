@@ -1,10 +1,13 @@
-import { fetchGraphQL } from '@foundation/common/src/fetch'
+import { fetchGraphQLServer } from '@foundation/common/src/fetch/server'
 import { CoursesDocument } from '@foundation/network/src/generated'
 
 import { CourseCardSimple } from '@foundation/ui/src/components/organisms/CourseCardSimple'
 
 export default async function ManageCourses() {
-  const { data } = await fetchGraphQL({ document: CoursesDocument })
+  const { data, error } = await fetchGraphQLServer({
+    document: CoursesDocument,
+  })
+  console.log('data, error ', data, error)
 
   return (
     <div>

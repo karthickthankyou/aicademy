@@ -7,9 +7,13 @@ import { UpdateCourseInput } from './dtos/update-course.input'
 @Injectable()
 export class CoursesService {
   constructor(private readonly prisma: PrismaService) {}
-  create({ adminUid, ...createCourseInput }: CreateCourseInput) {
+  create({ adminUid, chapters, ...createCourseInput }: CreateCourseInput) {
     return this.prisma.course.create({
-      data: { ...createCourseInput, admin: { connect: { uid: adminUid } } },
+      data: {
+        ...createCourseInput,
+        admin: { connect: { uid: adminUid } },
+        chapters: { createMany: { data: chapters } },
+      },
     })
   }
 
@@ -22,7 +26,7 @@ export class CoursesService {
   }
 
   update(updateCourseInput: UpdateCourseInput) {
-    const { id, ...data } = updateCourseInput
+    const { id, chapters, ...data } = updateCourseInput
     return this.prisma.course.update({
       where: { id },
       data: data,

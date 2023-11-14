@@ -339,6 +339,12 @@ input CreateCourseInput {
   description: String
   title: String!
   adminUid: String!
+  chapters: [CreateChapterInputWithoutCourseId!]!
+}
+
+input CreateChapterInputWithoutCourseId {
+  title: String!
+  content: String!
 }
 
 input UpdateCourseInput {
@@ -346,6 +352,7 @@ input UpdateCourseInput {
   description: String
   title: String
   adminUid: String
+  chapters: [CreateChapterInputWithoutCourseId!]
   id: Int!
 }
 

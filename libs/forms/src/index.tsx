@@ -1,1 +1,6 @@
-export { useFormContext, Controller } from 'react-hook-form'
+export {
+  useFormContext,
+  Controller,
+  useFieldArray,
+  useWatch,
+} from 'react-hook-form'

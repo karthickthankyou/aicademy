@@ -51,8 +51,13 @@ query adminMe {
   }
 }
 
-query courses {
-  courses {
+query courses(
+  $where: CourseWhereInput
+  $orderBy: [CourseOrderByWithRelationInput!]
+  $take: Int
+  $skip: Int
+) {
+  courses(where: $where, orderBy: $orderBy, take: $take, skip: $skip) {
     id
     title
     chaptersLength
@@ -96,5 +101,20 @@ query User($where: UserWhereUniqueInput) {
 mutation createCourse($createCourseInput: CreateCourseInput!) {
   createCourse(createCourseInput: $createCourseInput) {
     id
+  }
+}
+
+query course($where: CourseWhereUniqueInput!) {
+  course(where: $where) {
+    chapters {
+      id
+      title
+      content
+    }
+    description
+    id
+    title
+    createdAt
+    chaptersLength
   }
 }

@@ -15,7 +15,6 @@ import { AllowAuthenticated } from 'src/common/auth/auth.decorator'
 import { Chapter } from 'src/models/chapters/graphql/entity/chapter.entity'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 
-@AllowAuthenticated('admin')
 @Resolver(() => Course)
 export class CoursesResolver {
   constructor(
@@ -23,6 +22,7 @@ export class CoursesResolver {
     private readonly prisma: PrismaService,
   ) {}
 
+  @AllowAuthenticated('admin')
   @Mutation(() => Course)
   createCourse(@Args('createCourseInput') args: CreateCourseInput) {
     return this.coursesService.create(args)
@@ -38,11 +38,13 @@ export class CoursesResolver {
     return this.coursesService.findOne(args)
   }
 
+  @AllowAuthenticated('admin')
   @Mutation(() => Course)
   updateCourse(@Args('updateCourseInput') args: UpdateCourseInput) {
     return this.coursesService.update(args)
   }
 
+  @AllowAuthenticated('admin')
   @Mutation(() => Course)
   removeCourse(@Args() args: FindUniqueCourseArgs) {
     return this.coursesService.remove(args)
@@ -58,9 +60,9 @@ export class CoursesResolver {
   @ResolveField(() => Number)
   async chaptersLength(@Parent() parent: Course) {
     const chapAgg = await this.prisma.chapter.aggregate({
-      _count: { _all: true },
+      _count: { id: true },
       where: { courseId: parent.id },
     })
-    return chapAgg._count
+    return chapAgg._count.id
   }
 }

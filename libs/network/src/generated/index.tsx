@@ -215,8 +215,14 @@ export type CreateChapterInput = {
   title: Scalars['String']['input']
 }
 
+export type CreateChapterInputWithoutCourseId = {
+  content: Scalars['String']['input']
+  title: Scalars['String']['input']
+}
+
 export type CreateCourseInput = {
   adminUid: Scalars['String']['input']
+  chapters: Array<CreateChapterInputWithoutCourseId>
   description?: InputMaybe<Scalars['String']['input']>
   published?: InputMaybe<Scalars['Boolean']['input']>
   title: Scalars['String']['input']
@@ -445,6 +451,7 @@ export type UpdateChapterInput = {
 
 export type UpdateCourseInput = {
   adminUid?: InputMaybe<Scalars['String']['input']>
+  chapters?: InputMaybe<Array<CreateChapterInputWithoutCourseId>>
   description?: InputMaybe<Scalars['String']['input']>
   id: Scalars['Int']['input']
   published?: InputMaybe<Scalars['Boolean']['input']>
@@ -577,7 +584,14 @@ export type AdminMeQuery = {
   }
 }
 
-export type CoursesQueryVariables = Exact<{ [key: string]: never }>
+export type CoursesQueryVariables = Exact<{
+  where?: InputMaybe<CourseWhereInput>
+  orderBy?: InputMaybe<
+    Array<CourseOrderByWithRelationInput> | CourseOrderByWithRelationInput
+  >
+  take?: InputMaybe<Scalars['Int']['input']>
+  skip?: InputMaybe<Scalars['Int']['input']>
+}>
 
 export type CoursesQuery = {
   __typename?: 'Query'
@@ -648,6 +662,28 @@ export type CreateCourseMutation = {
   createCourse: { __typename?: 'Course'; id: number }
 }
 
+export type CourseQueryVariables = Exact<{
+  where: CourseWhereUniqueInput
+}>
+
+export type CourseQuery = {
+  __typename?: 'Query'
+  course: {
+    __typename?: 'Course'
+    description?: string | null
+    id: number
+    title: string
+    createdAt: any
+    chaptersLength: number
+    chapters: Array<{
+      __typename?: 'Chapter'
+      id: number
+      title: string
+      content: string
+    }>
+  }
+}
+
 export const namedOperations = {
   Query: {
     getCredentials: 'getCredentials',
@@ -656,6 +692,7 @@ export const namedOperations = {
     courses: 'courses',
     admins: 'admins',
     User: 'User',
+    course: 'course',
   },
   Mutation: {
     createUserWithCredentials: 'createUserWithCredentials',
@@ -978,12 +1015,86 @@ export const CoursesDocument = /*#__PURE__*/ {
       kind: 'OperationDefinition',
       operation: 'query',
       name: { kind: 'Name', value: 'courses' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'CourseWhereInput' },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'orderBy' },
+          },
+          type: {
+            kind: 'ListType',
+            type: {
+              kind: 'NonNullType',
+              type: {
+                kind: 'NamedType',
+                name: { kind: 'Name', value: 'CourseOrderByWithRelationInput' },
+              },
+            },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+      ],
       selectionSet: {
         kind: 'SelectionSet',
         selections: [
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'courses' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'orderBy' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'orderBy' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'take' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'take' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'skip' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'skip' },
+                },
+              },
+            ],
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
@@ -1271,3 +1382,76 @@ export const CreateCourseDocument = /*#__PURE__*/ {
   CreateCourseMutation,
   CreateCourseMutationVariables
 >
+export const CourseDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'course' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'CourseWhereUniqueInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'course' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'chapters' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'content' },
+                      },
+                    ],
+                  },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'description' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'chaptersLength' },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CourseQuery, CourseQueryVariables>

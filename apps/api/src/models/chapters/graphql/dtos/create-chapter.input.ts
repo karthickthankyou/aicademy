@@ -7,3 +7,9 @@ export class CreateChapterInput extends PickType(
   ['content', 'courseId', 'title'],
   InputType,
 ) {}
+@InputType()
+export class CreateChapterInputWithoutCourseId extends PickType(
+  Chapter,
+  ['content', 'title'],
+  InputType,
+) {}
