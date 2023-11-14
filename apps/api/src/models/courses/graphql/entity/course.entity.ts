@@ -22,3 +22,13 @@ export class Course implements RestrictProperties<Course, CourseType> {
 export class Answer {
   answer: string
 }
+
+@ObjectType()
+export class Question {
+  question: string
+}
+
+@ObjectType()
+export class Mark {
+  mark: string
+}

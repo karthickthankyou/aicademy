@@ -55,6 +55,14 @@ type Answer {
   answer: String!
 }
 
+type Question {
+  question: String!
+}
+
+type Mark {
+  mark: String!
+}
+
 type Chapter {
   id: Int!
   createdAt: DateTime!
@@ -65,17 +73,47 @@ type Chapter {
 }
 
 type Query {
-  users(distinct: [UserScalarFieldEnum!], where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int): [User!]!
+  users(
+    distinct: [UserScalarFieldEnum!]
+    where: UserWhereInput
+    orderBy: [UserOrderByWithRelationInput!]
+    cursor: UserWhereUniqueInput
+    take: Int
+    skip: Int
+  ): [User!]!
   getCredentials(email: String!): User
   getAuthProvider(uid: String!): AuthProvider
   user(where: UserWhereUniqueInput): User!
-  admins(distinct: [AdminScalarFieldEnum!], where: AdminWhereInput, orderBy: [AdminOrderByWithRelationInput!], cursor: AdminWhereUniqueInput, take: Int, skip: Int): [Admin!]!
+  admins(
+    distinct: [AdminScalarFieldEnum!]
+    where: AdminWhereInput
+    orderBy: [AdminOrderByWithRelationInput!]
+    cursor: AdminWhereUniqueInput
+    take: Int
+    skip: Int
+  ): [Admin!]!
   admin(where: AdminWhereUniqueInput!): Admin!
   adminMe: Admin!
-  courses(distinct: [CourseScalarFieldEnum!], where: CourseWhereInput, orderBy: [CourseOrderByWithRelationInput!], cursor: CourseWhereUniqueInput, take: Int, skip: Int): [Course!]!
+  courses(
+    distinct: [CourseScalarFieldEnum!]
+    where: CourseWhereInput
+    orderBy: [CourseOrderByWithRelationInput!]
+    cursor: CourseWhereUniqueInput
+    take: Int
+    skip: Int
+  ): [Course!]!
   doubt(question: String!, courseInfo: String!): Answer!
+  takeTest(courseInfo: String!): Question!
+  verifyAnswer(courseInfo: String!, question: String!, answer: String!): Mark!
   course(where: CourseWhereUniqueInput!): Course!
-  chapters(distinct: [ChapterScalarFieldEnum!], where: ChapterWhereInput, orderBy: [ChapterOrderByWithRelationInput!], cursor: ChapterWhereUniqueInput, take: Int, skip: Int): [Chapter!]!
+  chapters(
+    distinct: [ChapterScalarFieldEnum!]
+    where: ChapterWhereInput
+    orderBy: [ChapterOrderByWithRelationInput!]
+    cursor: ChapterWhereUniqueInput
+    take: Int
+    skip: Int
+  ): [Chapter!]!
   chapter(where: ChapterWhereUniqueInput!): Chapter!
 }
 
@@ -296,8 +334,12 @@ input ChapterWhereUniqueInput {
 }
 
 type Mutation {
-  createUserWithProvider(createUserWithProviderInput: CreateUserWithProviderInput!): User!
-  createUserWithCredentials(createUserWithCredentialsInput: CreateUserWithCredentialsInput!): User!
+  createUserWithProvider(
+    createUserWithProviderInput: CreateUserWithProviderInput!
+  ): User!
+  createUserWithCredentials(
+    createUserWithCredentialsInput: CreateUserWithCredentialsInput!
+  ): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(where: UserWhereUniqueInput): User!
   createAdmin(createAdminInput: CreateAdminInput!): Admin!

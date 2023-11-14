@@ -45,4 +45,65 @@ export class AIService {
       .map((choice) => choice.message.content)
       .join(' ')
   }
+
+  async takeTest({ courseInfo }: { courseInfo: string }) {
+    const messages: ChatCompletionMessageParam[] = []
+
+    messages.push({
+      role: 'system',
+      content:
+        'You are a teacher. Ask a question to the user from the below course.',
+    })
+
+    messages.push({ content: courseInfo, role: 'system' })
+
+    const chatCompletion = await this.openAI.chat.completions.create({
+      messages,
+      model: 'gpt-3.5-turbo',
+      max_tokens: 400,
+    })
+
+    console.log(`Answer: ${JSON.stringify(chatCompletion)}`)
+    return chatCompletion.choices
+      .map((choice) => choice.message.content)
+      .join(' ')
+  }
+
+  async verifyAnswer({
+    courseInfo,
+    question,
+    answer,
+  }: {
+    courseInfo: string
+    question: string
+    answer: string
+  }) {
+    const messages: ChatCompletionMessageParam[] = []
+
+    messages.push({
+      role: 'system',
+      content:
+        'You are a teacher. Look at the course information. Look at the question asked and answer.',
+    })
+
+    messages.push({ content: courseInfo, role: 'system' })
+    messages.push({ content: question, role: 'system' })
+    messages.push({ content: answer, role: 'user' })
+    messages.push({
+      content:
+        'Validate the answer and return a mark x out of 100 for the answer. Mention the student as you.',
+      role: 'system',
+    })
+
+    const chatCompletion = await this.openAI.chat.completions.create({
+      messages,
+      model: 'gpt-3.5-turbo',
+      max_tokens: 400,
+    })
+
+    console.log(`Answer: ${JSON.stringify(chatCompletion)}`)
+    return chatCompletion.choices
+      .map((choice) => choice.message.content)
+      .join(' ')
+  }
 }

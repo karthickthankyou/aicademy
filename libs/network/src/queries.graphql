@@ -124,3 +124,15 @@ query doubt($question: String!, $courseInfo: String!) {
     answer
   }
 }
+
+query takeTest($courseInfo: String!) {
+  takeTest(courseInfo: $courseInfo) {
+    question
+  }
+}
+
+query verifyAnswer($courseInfo: String!, $question: String!, $answer: String!) {
+  verifyAnswer(courseInfo: $courseInfo, question: $question, answer: $answer) {
+    mark
+  }
+}

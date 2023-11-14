@@ -274,6 +274,11 @@ export type IntFilter = {
   lte?: InputMaybe<Scalars['Int']['input']>
 }
 
+export type Mark = {
+  __typename?: 'Mark'
+  mark: Scalars['String']['output']
+}
+
 export type Mutation = {
   __typename?: 'Mutation'
   createAdmin: Admin
@@ -355,8 +360,10 @@ export type Query = {
   doubt: Answer
   getAuthProvider?: Maybe<AuthProvider>
   getCredentials?: Maybe<User>
+  takeTest: Question
   user: User
   users: Array<User>
+  verifyAnswer: Mark
 }
 
 export type QueryAdminArgs = {
@@ -411,6 +418,10 @@ export type QueryGetCredentialsArgs = {
   email: Scalars['String']['input']
 }
 
+export type QueryTakeTestArgs = {
+  courseInfo: Scalars['String']['input']
+}
+
 export type QueryUserArgs = {
   where?: InputMaybe<UserWhereUniqueInput>
 }
@@ -424,9 +435,20 @@ export type QueryUsersArgs = {
   where?: InputMaybe<UserWhereInput>
 }
 
+export type QueryVerifyAnswerArgs = {
+  answer: Scalars['String']['input']
+  courseInfo: Scalars['String']['input']
+  question: Scalars['String']['input']
+}
+
 export enum QueryMode {
   Default = 'default',
   Insensitive = 'insensitive',
+}
+
+export type Question = {
+  __typename?: 'Question'
+  question: Scalars['String']['output']
 }
 
 export enum SortOrder {
@@ -705,6 +727,26 @@ export type DoubtQuery = {
   doubt: { __typename?: 'Answer'; answer: string }
 }
 
+export type TakeTestQueryVariables = Exact<{
+  courseInfo: Scalars['String']['input']
+}>
+
+export type TakeTestQuery = {
+  __typename?: 'Query'
+  takeTest: { __typename?: 'Question'; question: string }
+}
+
+export type VerifyAnswerQueryVariables = Exact<{
+  courseInfo: Scalars['String']['input']
+  question: Scalars['String']['input']
+  answer: Scalars['String']['input']
+}>
+
+export type VerifyAnswerQuery = {
+  __typename?: 'Query'
+  verifyAnswer: { __typename?: 'Mark'; mark: string }
+}
+
 export const namedOperations = {
   Query: {
     getCredentials: 'getCredentials',
@@ -715,6 +757,8 @@ export const namedOperations = {
     User: 'User',
     course: 'course',
     doubt: 'doubt',
+    takeTest: 'takeTest',
+    verifyAnswer: 'verifyAnswer',
   },
   Mutation: {
     createUserWithCredentials: 'createUserWithCredentials',
@@ -1550,3 +1594,149 @@ export const DoubtDocument = /*#__PURE__*/ {
     },
   ],
 } as unknown as DocumentNode<DoubtQuery, DoubtQueryVariables>
+export const TakeTestDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'takeTest' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'courseInfo' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'String' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'takeTest' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'courseInfo' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'courseInfo' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'question' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<TakeTestQuery, TakeTestQueryVariables>
+export const VerifyAnswerDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'verifyAnswer' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'courseInfo' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'String' },
+            },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'question' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'String' },
+            },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'answer' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'String' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'verifyAnswer' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'courseInfo' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'courseInfo' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'question' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'question' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'answer' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'answer' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'mark' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<VerifyAnswerQuery, VerifyAnswerQueryVariables>

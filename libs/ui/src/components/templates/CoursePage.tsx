@@ -1,9 +1,12 @@
+'use client'
 import { CourseQuery } from '@foundation/network/src/generated'
+import { Sheet } from 'lucide-react'
 
 import { cn } from '../../utils'
 import { DisplayDate } from '../molecules/DisplayDate'
 import { Title3 } from '../atoms/typography'
 import { AIChat } from '../organisms/AIChat'
+import { AITest } from '../organisms/AITest'
 
 export interface ICoursePageProps {
   course: CourseQuery['course']
@@ -39,6 +42,7 @@ export const CoursePage = ({ course }: ICoursePageProps) => {
       </div>
       <div className="fixed bottom-0 right-0 p-2">
         <AIChat courseInfo={concatenateCourseInfo(course)} />
+        <AITest Icon={Sheet} courseInfo={concatenateCourseInfo(course)} />
       </div>
     </div>
   )
