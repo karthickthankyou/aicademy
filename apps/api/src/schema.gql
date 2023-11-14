@@ -51,6 +51,10 @@ type Course {
   chaptersLength: Int!
 }
 
+type Answer {
+  answer: String!
+}
+
 type Chapter {
   id: Int!
   createdAt: DateTime!
@@ -69,6 +73,7 @@ type Query {
   admin(where: AdminWhereUniqueInput!): Admin!
   adminMe: Admin!
   courses(distinct: [CourseScalarFieldEnum!], where: CourseWhereInput, orderBy: [CourseOrderByWithRelationInput!], cursor: CourseWhereUniqueInput, take: Int, skip: Int): [Course!]!
+  doubt(question: String!, courseInfo: String!): Answer!
   course(where: CourseWhereUniqueInput!): Course!
   chapters(distinct: [ChapterScalarFieldEnum!], where: ChapterWhereInput, orderBy: [ChapterOrderByWithRelationInput!], cursor: ChapterWhereUniqueInput, take: Int, skip: Int): [Chapter!]!
   chapter(where: ChapterWhereUniqueInput!): Chapter!

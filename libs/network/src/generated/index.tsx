@@ -64,6 +64,11 @@ export type AdminWhereUniqueInput = {
   uid: Scalars['String']['input']
 }
 
+export type Answer = {
+  __typename?: 'Answer'
+  answer: Scalars['String']['output']
+}
+
 export type AuthProvider = {
   __typename?: 'AuthProvider'
   type: AuthProviderType
@@ -347,6 +352,7 @@ export type Query = {
   chapters: Array<Chapter>
   course: Course
   courses: Array<Course>
+  doubt: Answer
   getAuthProvider?: Maybe<AuthProvider>
   getCredentials?: Maybe<User>
   user: User
@@ -390,6 +396,11 @@ export type QueryCoursesArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>
   take?: InputMaybe<Scalars['Int']['input']>
   where?: InputMaybe<CourseWhereInput>
+}
+
+export type QueryDoubtArgs = {
+  courseInfo: Scalars['String']['input']
+  question: Scalars['String']['input']
 }
 
 export type QueryGetAuthProviderArgs = {
@@ -684,6 +695,16 @@ export type CourseQuery = {
   }
 }
 
+export type DoubtQueryVariables = Exact<{
+  question: Scalars['String']['input']
+  courseInfo: Scalars['String']['input']
+}>
+
+export type DoubtQuery = {
+  __typename?: 'Query'
+  doubt: { __typename?: 'Answer'; answer: string }
+}
+
 export const namedOperations = {
   Query: {
     getCredentials: 'getCredentials',
@@ -693,6 +714,7 @@ export const namedOperations = {
     admins: 'admins',
     User: 'User',
     course: 'course',
+    doubt: 'doubt',
   },
   Mutation: {
     createUserWithCredentials: 'createUserWithCredentials',
@@ -1455,3 +1477,76 @@ export const CourseDocument = /*#__PURE__*/ {
     },
   ],
 } as unknown as DocumentNode<CourseQuery, CourseQueryVariables>
+export const DoubtDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'doubt' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'question' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'String' },
+            },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'courseInfo' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'String' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'doubt' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'question' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'question' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'courseInfo' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'courseInfo' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'answer' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<DoubtQuery, DoubtQueryVariables>

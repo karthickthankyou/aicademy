@@ -1,7 +1,7 @@
 import { createAdmin } from '@foundation/common/src/actions/createAdmin'
 import { Label } from '../atoms/label'
 import { Form } from '../atoms/form'
-import { SimpleDialog } from './SimpleDialog'
+import { SimpleDialog } from '../molecules/SimpleDialog'
 import { Input } from '../atoms/input'
 
 export interface ICreateReporterProps {}

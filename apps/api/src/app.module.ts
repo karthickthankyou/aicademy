@@ -11,6 +11,7 @@ import { AuthModule } from './common/auth/auth.module'
 import { AdminsModule } from './models/admins/admins.module'
 import { CoursesModule } from './models/courses/courses.module'
 import { ChaptersModule } from './models/chapters/chapters.module'
+import { AIModule } from './common/ai/ai.module'
 
 @Module({
   imports: [
@@ -26,6 +27,8 @@ import { ChaptersModule } from './models/chapters/chapters.module'
     ConfigModule.forRoot(),
     PrismaModule,
     AuthModule,
+
+    AIModule,
 
     UsersModule,
     AdminsModule,

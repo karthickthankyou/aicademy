@@ -17,3 +17,8 @@ export class Course implements RestrictProperties<Course, CourseType> {
   // Todo Add below to make optional fields optional.
   // @Field({ nullable: true })
 }
+
+@ObjectType()
+export class Answer {
+  answer: string
+}

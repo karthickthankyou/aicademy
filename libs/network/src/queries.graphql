@@ -118,3 +118,9 @@ query course($where: CourseWhereUniqueInput!) {
     chaptersLength
   }
 }
+
+query doubt($question: String!, $courseInfo: String!) {
+  doubt(question: $question, courseInfo: $courseInfo) {
+    answer
+  }
+}
