@@ -5,6 +5,7 @@ import {
   RestrictProperties,
   StringFilter,
 } from 'src/common/dtos/common.input'
+import { AdminRelationFilter } from 'src/models/admins/graphql/dtos/where.args'
 
 @InputType()
 export class UserWhereUniqueInput {
@@ -19,6 +20,7 @@ export class UserWhereInputStrict
       Omit<Prisma.UserWhereInput, 'credentials' | 'authProvider'>
     >
 {
+  Admin: AdminRelationFilter
   uid: StringFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter

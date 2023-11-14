@@ -34,11 +34,26 @@ type Credential {
   updatedAt: DateTime!
 }
 
-type Item {
+type Admin {
+  uid: String!
+}
+
+type Course {
+  description: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  id: Int!
+  title: String!
+  adminUid: String!
+}
+
+type Chapter {
   id: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
-  name: String!
+  title: String!
+  content: String!
+  courseId: Int!
 }
 
 type Query {
@@ -46,8 +61,12 @@ type Query {
   getCredentials(email: String!): User
   getAuthProvider(uid: String!): AuthProvider
   user(where: UserWhereUniqueInput): User!
-  items(distinct: [ItemScalarFieldEnum!], where: ItemWhereInput, orderBy: [ItemOrderByWithRelationInput!], cursor: ItemWhereUniqueInput, take: Int, skip: Int): [Item!]!
-  item(where: ItemWhereUniqueInput!): Item!
+  admins(distinct: [AdminScalarFieldEnum!], where: AdminWhereInput, orderBy: [AdminOrderByWithRelationInput!], cursor: AdminWhereUniqueInput, take: Int, skip: Int): [Admin!]!
+  admin(where: AdminWhereUniqueInput!): Admin!
+  courses(distinct: [CourseScalarFieldEnum!], where: CourseWhereInput, orderBy: [CourseOrderByWithRelationInput!], cursor: CourseWhereUniqueInput, take: Int, skip: Int): [Course!]!
+  course(where: CourseWhereUniqueInput!): Course!
+  chapters(distinct: [ChapterScalarFieldEnum!], where: ChapterWhereInput, orderBy: [ChapterOrderByWithRelationInput!], cursor: ChapterWhereUniqueInput, take: Int, skip: Int): [Chapter!]!
+  chapter(where: ChapterWhereUniqueInput!): Chapter!
 }
 
 enum UserScalarFieldEnum {
@@ -59,6 +78,7 @@ enum UserScalarFieldEnum {
 }
 
 input UserWhereInput {
+  Admin: AdminRelationFilter
   uid: StringFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
@@ -67,6 +87,20 @@ input UserWhereInput {
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
+}
+
+input AdminRelationFilter {
+  is: AdminWhereInput
+  isNot: AdminWhereInput
+}
+
+input AdminWhereInput {
+  uid: StringFilter
+  user: UserRelationFilter
+  courses: CourseListRelationFilter
+  AND: [AdminWhereInput!]
+  OR: [AdminWhereInput!]
+  NOT: [AdminWhereInput!]
 }
 
 input StringFilter {
@@ -89,6 +123,31 @@ enum QueryMode {
   insensitive
 }
 
+input UserRelationFilter {
+  is: UserWhereInput
+  isNot: UserWhereInput
+}
+
+input CourseListRelationFilter {
+  every: CourseWhereInput
+  some: CourseWhereInput
+  none: CourseWhereInput
+}
+
+input CourseWhereInput {
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  id: IntFilter
+  title: StringFilter
+  description: StringFilter
+  adminUid: StringFilter
+  chapters: ChapterListRelationFilter
+  admin: AdminRelationFilter
+  AND: [CourseWhereInput!]
+  OR: [CourseWhereInput!]
+  NOT: [CourseWhereInput!]
+}
+
 input DateTimeFilter {
   equals: String
   in: [String!]
@@ -99,40 +158,6 @@ input DateTimeFilter {
   gte: String
 }
 
-input UserOrderByWithRelationInput {
-  uid: SortOrder
-  createdAt: SortOrder
-  updatedAt: SortOrder
-  name: SortOrder
-  image: SortOrder
-}
-
-enum SortOrder {
-  asc
-  desc
-}
-
-input UserWhereUniqueInput {
-  uid: String!
-}
-
-enum ItemScalarFieldEnum {
-  id
-  createdAt
-  updatedAt
-  name
-}
-
-input ItemWhereInput {
-  id: IntFilter
-  createdAt: DateTimeFilter
-  updatedAt: DateTimeFilter
-  name: StringFilter
-  AND: [ItemWhereInput!]
-  OR: [ItemWhereInput!]
-  NOT: [ItemWhereInput!]
-}
-
 input IntFilter {
   equals: Int
   lt: Int
@@ -141,14 +166,114 @@ input IntFilter {
   gte: Int
 }
 
-input ItemOrderByWithRelationInput {
-  id: SortOrder
+input ChapterListRelationFilter {
+  every: ChapterWhereInput
+  some: ChapterWhereInput
+  none: ChapterWhereInput
+}
+
+input ChapterWhereInput {
+  id: IntFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  title: StringFilter
+  content: StringFilter
+  courseId: IntFilter
+  course: CourseRelationFilter
+  AND: [ChapterWhereInput!]
+  OR: [ChapterWhereInput!]
+  NOT: [ChapterWhereInput!]
+}
+
+input CourseRelationFilter {
+  is: CourseWhereInput
+  isNot: CourseWhereInput
+}
+
+input UserOrderByWithRelationInput {
+  Admin: AdminOrderByWithRelationInput
+  uid: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
   name: SortOrder
+  image: SortOrder
 }
 
-input ItemWhereUniqueInput {
+input AdminOrderByWithRelationInput {
+  uid: SortOrder
+  user: UserOrderByWithRelationInput
+  courses: CourseOrderByRelationAggregateInput
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+input CourseOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input UserWhereUniqueInput {
+  uid: String!
+}
+
+enum AdminScalarFieldEnum {
+  uid
+}
+
+input AdminWhereUniqueInput {
+  uid: String!
+}
+
+enum CourseScalarFieldEnum {
+  id
+  createdAt
+  updatedAt
+  title
+  description
+  adminUid
+}
+
+input CourseOrderByWithRelationInput {
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  id: SortOrder
+  title: SortOrder
+  description: SortOrder
+  adminUid: SortOrder
+  chapters: ChapterOrderByRelationAggregateInput
+  admin: AdminOrderByWithRelationInput
+}
+
+input ChapterOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input CourseWhereUniqueInput {
+  id: Int!
+}
+
+enum ChapterScalarFieldEnum {
+  id
+  createdAt
+  updatedAt
+  title
+  content
+  courseId
+}
+
+input ChapterOrderByWithRelationInput {
+  id: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  title: SortOrder
+  content: SortOrder
+  courseId: SortOrder
+  course: CourseOrderByWithRelationInput
+}
+
+input ChapterWhereUniqueInput {
   id: Int!
 }
 
@@ -157,9 +282,15 @@ type Mutation {
   createUserWithCredentials(createUserWithCredentialsInput: CreateUserWithCredentialsInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(where: UserWhereUniqueInput): User!
-  createItem(createItemInput: CreateItemInput!): Item!
-  updateItem(updateItemInput: UpdateItemInput!): Item!
-  removeItem(where: ItemWhereUniqueInput!): Item!
+  createAdmin(createAdminInput: CreateAdminInput!): Admin!
+  updateAdmin(updateAdminInput: UpdateAdminInput!): Admin!
+  removeAdmin(where: AdminWhereUniqueInput!): Admin!
+  createCourse(createCourseInput: CreateCourseInput!): Course!
+  updateCourse(updateCourseInput: UpdateCourseInput!): Course!
+  removeCourse(where: CourseWhereUniqueInput!): Course!
+  createChapter(createChapterInput: CreateChapterInput!): Chapter!
+  updateChapter(updateChapterInput: UpdateChapterInput!): Chapter!
+  removeChapter(where: ChapterWhereUniqueInput!): Chapter!
 }
 
 input CreateUserWithProviderInput {
@@ -182,11 +313,36 @@ input UpdateUserInput {
   name: String
 }
 
-input CreateItemInput {
-  name: String!
+input CreateAdminInput {
+  uid: String!
 }
 
-input UpdateItemInput {
-  name: String
+input UpdateAdminInput {
+  uid: String!
+}
+
+input CreateCourseInput {
+  description: String
+  title: String!
+  adminUid: String!
+}
+
+input UpdateCourseInput {
+  description: String
+  title: String
+  adminUid: String
+  id: Int!
+}
+
+input CreateChapterInput {
+  title: String!
+  content: String!
+  courseId: Int!
+}
+
+input UpdateChapterInput {
+  title: String
+  content: String
+  courseId: Int
   id: Int!
 }

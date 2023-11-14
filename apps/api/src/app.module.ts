@@ -8,7 +8,9 @@ import { ConfigModule } from '@nestjs/config'
 import { UsersModule } from './models/users/users.module'
 import { PrismaModule } from './common/prisma/prisma.module'
 import { AuthModule } from './common/auth/auth.module'
-import { ItemsModule } from './models/items/items.module'
+import { AdminsModule } from './models/admins/admins.module'
+import { CoursesModule } from './models/courses/courses.module'
+import { ChaptersModule } from './models/chapters/chapters.module'
 
 @Module({
   imports: [
@@ -26,7 +28,9 @@ import { ItemsModule } from './models/items/items.module'
     AuthModule,
 
     UsersModule,
-    ItemsModule,
+    AdminsModule,
+    CoursesModule,
+    ChaptersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

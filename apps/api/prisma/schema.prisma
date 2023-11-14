@@ -19,6 +19,7 @@ model User {
 
     credentials  Credentials?
     authProvider AuthProvider?
+    Admin        Admin?
 }
 
 model Credentials {
@@ -42,9 +43,33 @@ enum AuthProviderType {
     CREDENTIALS
 }
 
-model Item {
+model Admin {
+    uid String @id
+
+    user    User     @relation(fields: [uid], references: [uid])
+    courses Course[]
+}
+
+model Course {
     id        Int      @id @default(autoincrement())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    name      String
+
+    title       String    @unique
+    description String?
+    chapters    Chapter[]
+
+    admin    Admin  @relation(fields: [adminUid], references: [uid])
+    adminUid String
+}
+
+model Chapter {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    title    String
+    content  String
+    courseId Int
+    course   Course @relation(fields: [courseId], references: [id])
 }
