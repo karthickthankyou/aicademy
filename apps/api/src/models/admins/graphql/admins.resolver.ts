@@ -4,7 +4,9 @@ import { Admin } from './entity/admin.entity'
 import { FindManyAdminArgs, FindUniqueAdminArgs } from './dtos/find.args'
 import { CreateAdminInput } from './dtos/create-admin.input'
 import { UpdateAdminInput } from './dtos/update-admin.input'
+import { AllowAuthenticated } from 'src/common/auth/auth.decorator'
 
+@AllowAuthenticated('admin')
 @Resolver(() => Admin)
 export class AdminsResolver {
   constructor(private readonly adminsService: AdminsService) {}

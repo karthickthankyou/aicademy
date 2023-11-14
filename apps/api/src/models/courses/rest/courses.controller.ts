@@ -23,6 +23,7 @@ import { CourseEntity } from './entity/course.entity'
 import { AllowAuthenticated, GetUser } from 'src/common/auth/auth.decorator'
 import { GetUserType } from 'src/common/util/types'
 
+@AllowAuthenticated('admin')
 @ApiTags('courses')
 @Controller('courses')
 export class CoursesController {

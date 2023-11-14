@@ -24,11 +24,11 @@ export class AuthGuard implements CanActivate {
 
     switch (requiredRole) {
       case 'admin':
-        // userExists = await this.prisma.admin.findUnique({
-        //   where: { uid },
-        // })
+        userExists = await this.prisma.admin.findUnique({
+          where: { uid },
+        })
         break
-      case 'manager':
+      case 'teacher':
         // userExists = await this.prisma.reporter.findUnique({
         //   where: { uid },
         // })

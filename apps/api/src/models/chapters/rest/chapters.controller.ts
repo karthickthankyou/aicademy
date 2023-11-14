@@ -23,6 +23,7 @@ import { ChapterEntity } from './entity/chapter.entity'
 import { AllowAuthenticated, GetUser } from 'src/common/auth/auth.decorator'
 import { GetUserType } from 'src/common/util/types'
 
+@AllowAuthenticated('admin')
 @ApiTags('chapters')
 @Controller('chapters')
 export class ChaptersController {

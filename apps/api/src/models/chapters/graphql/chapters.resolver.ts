@@ -4,7 +4,9 @@ import { Chapter } from './entity/chapter.entity'
 import { FindManyChapterArgs, FindUniqueChapterArgs } from './dtos/find.args'
 import { CreateChapterInput } from './dtos/create-chapter.input'
 import { UpdateChapterInput } from './dtos/update-chapter.input'
+import { AllowAuthenticated } from 'src/common/auth/auth.decorator'
 
+@AllowAuthenticated('admin')
 @Resolver(() => Chapter)
 export class ChaptersResolver {
   constructor(private readonly chaptersService: ChaptersService) {}

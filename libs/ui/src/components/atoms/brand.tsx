@@ -12,7 +12,7 @@ export const Brand = () => {
         href="/"
         className={cn('hover:underline font-medium underline-offset-4')}
       >
-        Foundation X
+        A<span className="font-serif italic">i</span>cademy
       </Link>
       <DeveloperInfo />
     </div>

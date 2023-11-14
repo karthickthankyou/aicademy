@@ -23,6 +23,7 @@ import { AdminEntity } from './entity/admin.entity'
 import { AllowAuthenticated, GetUser } from 'src/common/auth/auth.decorator'
 import { GetUserType } from 'src/common/util/types'
 
+@AllowAuthenticated('admin')
 @ApiTags('admins')
 @Controller('admins')
 export class AdminsController {

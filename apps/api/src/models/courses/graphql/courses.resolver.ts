@@ -4,7 +4,9 @@ import { Course } from './entity/course.entity'
 import { FindManyCourseArgs, FindUniqueCourseArgs } from './dtos/find.args'
 import { CreateCourseInput } from './dtos/create-course.input'
 import { UpdateCourseInput } from './dtos/update-course.input'
+import { AllowAuthenticated } from 'src/common/auth/auth.decorator'
 
+@AllowAuthenticated('admin')
 @Resolver(() => Course)
 export class CoursesResolver {
   constructor(private readonly coursesService: CoursesService) {}
