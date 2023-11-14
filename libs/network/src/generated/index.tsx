@@ -30,6 +30,40 @@ export type Scalars = {
   DateTime: { input: any; output: any }
 }
 
+export type Admin = {
+  __typename?: 'Admin'
+  uid: Scalars['String']['output']
+  user: User
+}
+
+export type AdminOrderByWithRelationInput = {
+  courses?: InputMaybe<CourseOrderByRelationAggregateInput>
+  uid?: InputMaybe<SortOrder>
+  user?: InputMaybe<UserOrderByWithRelationInput>
+}
+
+export type AdminRelationFilter = {
+  is?: InputMaybe<AdminWhereInput>
+  isNot?: InputMaybe<AdminWhereInput>
+}
+
+export enum AdminScalarFieldEnum {
+  Uid = 'uid',
+}
+
+export type AdminWhereInput = {
+  AND?: InputMaybe<Array<AdminWhereInput>>
+  NOT?: InputMaybe<Array<AdminWhereInput>>
+  OR?: InputMaybe<Array<AdminWhereInput>>
+  courses?: InputMaybe<CourseListRelationFilter>
+  uid?: InputMaybe<StringFilter>
+  user?: InputMaybe<UserRelationFilter>
+}
+
+export type AdminWhereUniqueInput = {
+  uid: Scalars['String']['input']
+}
+
 export type AuthProvider = {
   __typename?: 'AuthProvider'
   type: AuthProviderType
@@ -41,8 +75,151 @@ export enum AuthProviderType {
   Google = 'GOOGLE',
 }
 
-export type CreateItemInput = {
-  name: Scalars['String']['input']
+export type BoolFilter = {
+  equals?: InputMaybe<Scalars['Boolean']['input']>
+  not?: InputMaybe<Scalars['Boolean']['input']>
+}
+
+export type Chapter = {
+  __typename?: 'Chapter'
+  content: Scalars['String']['output']
+  courseId: Scalars['Int']['output']
+  createdAt: Scalars['DateTime']['output']
+  id: Scalars['Int']['output']
+  title: Scalars['String']['output']
+  updatedAt: Scalars['DateTime']['output']
+}
+
+export type ChapterListRelationFilter = {
+  every?: InputMaybe<ChapterWhereInput>
+  none?: InputMaybe<ChapterWhereInput>
+  some?: InputMaybe<ChapterWhereInput>
+}
+
+export type ChapterOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>
+}
+
+export type ChapterOrderByWithRelationInput = {
+  content?: InputMaybe<SortOrder>
+  course?: InputMaybe<CourseOrderByWithRelationInput>
+  courseId?: InputMaybe<SortOrder>
+  createdAt?: InputMaybe<SortOrder>
+  id?: InputMaybe<SortOrder>
+  title?: InputMaybe<SortOrder>
+  updatedAt?: InputMaybe<SortOrder>
+}
+
+export enum ChapterScalarFieldEnum {
+  Content = 'content',
+  CourseId = 'courseId',
+  CreatedAt = 'createdAt',
+  Id = 'id',
+  Title = 'title',
+  UpdatedAt = 'updatedAt',
+}
+
+export type ChapterWhereInput = {
+  AND?: InputMaybe<Array<ChapterWhereInput>>
+  NOT?: InputMaybe<Array<ChapterWhereInput>>
+  OR?: InputMaybe<Array<ChapterWhereInput>>
+  content?: InputMaybe<StringFilter>
+  course?: InputMaybe<CourseRelationFilter>
+  courseId?: InputMaybe<IntFilter>
+  createdAt?: InputMaybe<DateTimeFilter>
+  id?: InputMaybe<IntFilter>
+  title?: InputMaybe<StringFilter>
+  updatedAt?: InputMaybe<DateTimeFilter>
+}
+
+export type ChapterWhereUniqueInput = {
+  id: Scalars['Int']['input']
+}
+
+export type Course = {
+  __typename?: 'Course'
+  adminUid: Scalars['String']['output']
+  chapters: Array<Chapter>
+  chaptersLength: Scalars['Int']['output']
+  createdAt: Scalars['DateTime']['output']
+  description?: Maybe<Scalars['String']['output']>
+  id: Scalars['Int']['output']
+  published?: Maybe<Scalars['Boolean']['output']>
+  title: Scalars['String']['output']
+  updatedAt: Scalars['DateTime']['output']
+}
+
+export type CourseListRelationFilter = {
+  every?: InputMaybe<CourseWhereInput>
+  none?: InputMaybe<CourseWhereInput>
+  some?: InputMaybe<CourseWhereInput>
+}
+
+export type CourseOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>
+}
+
+export type CourseOrderByWithRelationInput = {
+  admin?: InputMaybe<AdminOrderByWithRelationInput>
+  adminUid?: InputMaybe<SortOrder>
+  chapters?: InputMaybe<ChapterOrderByRelationAggregateInput>
+  createdAt?: InputMaybe<SortOrder>
+  description?: InputMaybe<SortOrder>
+  id?: InputMaybe<SortOrder>
+  published?: InputMaybe<SortOrder>
+  title?: InputMaybe<SortOrder>
+  updatedAt?: InputMaybe<SortOrder>
+}
+
+export type CourseRelationFilter = {
+  is?: InputMaybe<CourseWhereInput>
+  isNot?: InputMaybe<CourseWhereInput>
+}
+
+export enum CourseScalarFieldEnum {
+  AdminUid = 'adminUid',
+  CreatedAt = 'createdAt',
+  Description = 'description',
+  Id = 'id',
+  Published = 'published',
+  Title = 'title',
+  UpdatedAt = 'updatedAt',
+}
+
+export type CourseWhereInput = {
+  AND?: InputMaybe<Array<CourseWhereInput>>
+  NOT?: InputMaybe<Array<CourseWhereInput>>
+  OR?: InputMaybe<Array<CourseWhereInput>>
+  admin?: InputMaybe<AdminRelationFilter>
+  adminUid?: InputMaybe<StringFilter>
+  chapters?: InputMaybe<ChapterListRelationFilter>
+  createdAt?: InputMaybe<DateTimeFilter>
+  description?: InputMaybe<StringFilter>
+  id?: InputMaybe<IntFilter>
+  published?: InputMaybe<BoolFilter>
+  title?: InputMaybe<StringFilter>
+  updatedAt?: InputMaybe<DateTimeFilter>
+}
+
+export type CourseWhereUniqueInput = {
+  id: Scalars['Int']['input']
+}
+
+export type CreateAdminInput = {
+  uid: Scalars['String']['input']
+}
+
+export type CreateChapterInput = {
+  content: Scalars['String']['input']
+  courseId: Scalars['Int']['input']
+  title: Scalars['String']['input']
+}
+
+export type CreateCourseInput = {
+  adminUid: Scalars['String']['input']
+  description?: InputMaybe<Scalars['String']['input']>
+  published?: InputMaybe<Scalars['Boolean']['input']>
+  title: Scalars['String']['input']
 }
 
 export type CreateUserWithCredentialsInput = {
@@ -86,55 +263,33 @@ export type IntFilter = {
   lte?: InputMaybe<Scalars['Int']['input']>
 }
 
-export type Item = {
-  __typename?: 'Item'
-  createdAt: Scalars['DateTime']['output']
-  id: Scalars['Int']['output']
-  name: Scalars['String']['output']
-  updatedAt: Scalars['DateTime']['output']
-}
-
-export type ItemOrderByWithRelationInput = {
-  createdAt?: InputMaybe<SortOrder>
-  id?: InputMaybe<SortOrder>
-  name?: InputMaybe<SortOrder>
-  updatedAt?: InputMaybe<SortOrder>
-}
-
-export enum ItemScalarFieldEnum {
-  CreatedAt = 'createdAt',
-  Id = 'id',
-  Name = 'name',
-  UpdatedAt = 'updatedAt',
-}
-
-export type ItemWhereInput = {
-  AND?: InputMaybe<Array<ItemWhereInput>>
-  NOT?: InputMaybe<Array<ItemWhereInput>>
-  OR?: InputMaybe<Array<ItemWhereInput>>
-  createdAt?: InputMaybe<DateTimeFilter>
-  id?: InputMaybe<IntFilter>
-  name?: InputMaybe<StringFilter>
-  updatedAt?: InputMaybe<DateTimeFilter>
-}
-
-export type ItemWhereUniqueInput = {
-  id?: InputMaybe<Scalars['Int']['input']>
-}
-
 export type Mutation = {
   __typename?: 'Mutation'
-  createItem: Item
+  createAdmin: Admin
+  createChapter: Chapter
+  createCourse: Course
   createUserWithCredentials: User
   createUserWithProvider: User
-  removeItem: Item
+  removeAdmin: Admin
+  removeChapter: Chapter
+  removeCourse: Course
   removeUser: User
-  updateItem: Item
+  updateAdmin: Admin
+  updateChapter: Chapter
+  updateCourse: Course
   updateUser: User
 }
 
-export type MutationCreateItemArgs = {
-  createItemInput: CreateItemInput
+export type MutationCreateAdminArgs = {
+  createAdminInput: CreateAdminInput
+}
+
+export type MutationCreateChapterArgs = {
+  createChapterInput: CreateChapterInput
+}
+
+export type MutationCreateCourseArgs = {
+  createCourseInput: CreateCourseInput
 }
 
 export type MutationCreateUserWithCredentialsArgs = {
@@ -145,16 +300,32 @@ export type MutationCreateUserWithProviderArgs = {
   createUserWithProviderInput: CreateUserWithProviderInput
 }
 
-export type MutationRemoveItemArgs = {
-  where?: InputMaybe<ItemWhereUniqueInput>
+export type MutationRemoveAdminArgs = {
+  where: AdminWhereUniqueInput
+}
+
+export type MutationRemoveChapterArgs = {
+  where: ChapterWhereUniqueInput
+}
+
+export type MutationRemoveCourseArgs = {
+  where: CourseWhereUniqueInput
 }
 
 export type MutationRemoveUserArgs = {
   where?: InputMaybe<UserWhereUniqueInput>
 }
 
-export type MutationUpdateItemArgs = {
-  updateItemInput: UpdateItemInput
+export type MutationUpdateAdminArgs = {
+  updateAdminInput: UpdateAdminInput
+}
+
+export type MutationUpdateChapterArgs = {
+  updateChapterInput: UpdateChapterInput
+}
+
+export type MutationUpdateCourseArgs = {
+  updateCourseInput: UpdateCourseInput
 }
 
 export type MutationUpdateUserArgs = {
@@ -163,12 +334,56 @@ export type MutationUpdateUserArgs = {
 
 export type Query = {
   __typename?: 'Query'
+  admin: Admin
+  adminMe: Admin
+  admins: Array<Admin>
+  chapter: Chapter
+  chapters: Array<Chapter>
+  course: Course
+  courses: Array<Course>
   getAuthProvider?: Maybe<AuthProvider>
   getCredentials?: Maybe<User>
-  item: Item
-  items: Array<Item>
   user: User
   users: Array<User>
+}
+
+export type QueryAdminArgs = {
+  where: AdminWhereUniqueInput
+}
+
+export type QueryAdminsArgs = {
+  cursor?: InputMaybe<AdminWhereUniqueInput>
+  distinct?: InputMaybe<Array<AdminScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<AdminOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']['input']>
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: InputMaybe<AdminWhereInput>
+}
+
+export type QueryChapterArgs = {
+  where: ChapterWhereUniqueInput
+}
+
+export type QueryChaptersArgs = {
+  cursor?: InputMaybe<ChapterWhereUniqueInput>
+  distinct?: InputMaybe<Array<ChapterScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<ChapterOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']['input']>
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: InputMaybe<ChapterWhereInput>
+}
+
+export type QueryCourseArgs = {
+  where: CourseWhereUniqueInput
+}
+
+export type QueryCoursesArgs = {
+  cursor?: InputMaybe<CourseWhereUniqueInput>
+  distinct?: InputMaybe<Array<CourseScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<CourseOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']['input']>
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: InputMaybe<CourseWhereInput>
 }
 
 export type QueryGetAuthProviderArgs = {
@@ -177,19 +392,6 @@ export type QueryGetAuthProviderArgs = {
 
 export type QueryGetCredentialsArgs = {
   email: Scalars['String']['input']
-}
-
-export type QueryItemArgs = {
-  where?: InputMaybe<ItemWhereUniqueInput>
-}
-
-export type QueryItemsArgs = {
-  cursor?: InputMaybe<ItemWhereUniqueInput>
-  distinct?: InputMaybe<Array<ItemScalarFieldEnum>>
-  orderBy?: InputMaybe<Array<ItemOrderByWithRelationInput>>
-  skip?: InputMaybe<Scalars['Int']['input']>
-  take?: InputMaybe<Scalars['Int']['input']>
-  where?: InputMaybe<ItemWhereInput>
 }
 
 export type QueryUserArgs = {
@@ -230,9 +432,23 @@ export type StringFilter = {
   startsWith?: InputMaybe<Scalars['String']['input']>
 }
 
-export type UpdateItemInput = {
+export type UpdateAdminInput = {
+  uid: Scalars['String']['input']
+}
+
+export type UpdateChapterInput = {
+  content?: InputMaybe<Scalars['String']['input']>
+  courseId?: InputMaybe<Scalars['Int']['input']>
   id: Scalars['Int']['input']
-  name?: InputMaybe<Scalars['String']['input']>
+  title?: InputMaybe<Scalars['String']['input']>
+}
+
+export type UpdateCourseInput = {
+  adminUid?: InputMaybe<Scalars['String']['input']>
+  description?: InputMaybe<Scalars['String']['input']>
+  id: Scalars['Int']['input']
+  published?: InputMaybe<Scalars['Boolean']['input']>
+  title?: InputMaybe<Scalars['String']['input']>
 }
 
 export type UpdateUserInput = {
@@ -252,11 +468,17 @@ export type User = {
 }
 
 export type UserOrderByWithRelationInput = {
+  Admin?: InputMaybe<AdminOrderByWithRelationInput>
   createdAt?: InputMaybe<SortOrder>
   image?: InputMaybe<SortOrder>
   name?: InputMaybe<SortOrder>
   uid?: InputMaybe<SortOrder>
   updatedAt?: InputMaybe<SortOrder>
+}
+
+export type UserRelationFilter = {
+  is?: InputMaybe<UserWhereInput>
+  isNot?: InputMaybe<UserWhereInput>
 }
 
 export enum UserScalarFieldEnum {
@@ -269,6 +491,7 @@ export enum UserScalarFieldEnum {
 
 export type UserWhereInput = {
   AND?: InputMaybe<Array<UserWhereInput>>
+  Admin?: InputMaybe<AdminRelationFilter>
   NOT?: InputMaybe<Array<UserWhereInput>>
   OR?: InputMaybe<Array<UserWhereInput>>
   createdAt?: InputMaybe<DateTimeFilter>
@@ -332,17 +555,139 @@ export type GetAuthProviderQuery = {
   } | null
 }
 
+export type UserDetailsFragment = {
+  __typename?: 'User'
+  image?: string | null
+  name: string
+  uid: string
+}
+
+export type AdminMeQueryVariables = Exact<{ [key: string]: never }>
+
+export type AdminMeQuery = {
+  __typename?: 'Query'
+  adminMe: {
+    __typename?: 'Admin'
+    user: {
+      __typename?: 'User'
+      image?: string | null
+      name: string
+      uid: string
+    }
+  }
+}
+
+export type CoursesQueryVariables = Exact<{ [key: string]: never }>
+
+export type CoursesQuery = {
+  __typename?: 'Query'
+  courses: Array<{
+    __typename?: 'Course'
+    id: number
+    title: string
+    chaptersLength: number
+    createdAt: any
+    published?: boolean | null
+  }>
+}
+
+export type AdminsQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>
+  take?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<
+    Array<AdminOrderByWithRelationInput> | AdminOrderByWithRelationInput
+  >
+  where?: InputMaybe<AdminWhereInput>
+}>
+
+export type AdminsQuery = {
+  __typename?: 'Query'
+  admins: Array<{
+    __typename?: 'Admin'
+    uid: string
+    user: {
+      __typename?: 'User'
+      name: string
+      image?: string | null
+      uid: string
+    }
+  }>
+}
+
+export type CreateAdminMutationVariables = Exact<{
+  createAdminInput: CreateAdminInput
+}>
+
+export type CreateAdminMutation = {
+  __typename?: 'Mutation'
+  createAdmin: { __typename?: 'Admin'; uid: string }
+}
+
+export type UserQueryVariables = Exact<{
+  where?: InputMaybe<UserWhereUniqueInput>
+}>
+
+export type UserQuery = {
+  __typename?: 'Query'
+  user: {
+    __typename?: 'User'
+    name: string
+    image?: string | null
+    updatedAt: any
+    createdAt: any
+    uid: string
+  }
+}
+
+export type CreateCourseMutationVariables = Exact<{
+  createCourseInput: CreateCourseInput
+}>
+
+export type CreateCourseMutation = {
+  __typename?: 'Mutation'
+  createCourse: { __typename?: 'Course'; id: number }
+}
+
 export const namedOperations = {
   Query: {
     getCredentials: 'getCredentials',
     GetAuthProvider: 'GetAuthProvider',
+    adminMe: 'adminMe',
+    courses: 'courses',
+    admins: 'admins',
+    User: 'User',
   },
   Mutation: {
     createUserWithCredentials: 'createUserWithCredentials',
     CreateUserWithProvider: 'CreateUserWithProvider',
+    createAdmin: 'createAdmin',
+    createCourse: 'createCourse',
+  },
+  Fragment: {
+    userDetails: 'userDetails',
   },
 }
-
+export const UserDetailsFragmentDoc = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'userDetails' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'User' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'image' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'uid' } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<UserDetailsFragment, unknown>
 export const CreateUserWithCredentialsDocument = /*#__PURE__*/ {
   kind: 'Document',
   definitions: [
@@ -572,4 +917,357 @@ export const GetAuthProviderDocument = /*#__PURE__*/ {
 } as unknown as DocumentNode<
   GetAuthProviderQuery,
   GetAuthProviderQueryVariables
+>
+export const AdminMeDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'adminMe' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'adminMe' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'FragmentSpread',
+                        name: { kind: 'Name', value: 'userDetails' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'userDetails' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'User' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'image' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'uid' } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<AdminMeQuery, AdminMeQueryVariables>
+export const CoursesDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'courses' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'courses' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'chaptersLength' },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'published' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CoursesQuery, CoursesQueryVariables>
+export const AdminsDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'admins' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'orderBy' },
+          },
+          type: {
+            kind: 'ListType',
+            type: {
+              kind: 'NonNullType',
+              type: {
+                kind: 'NamedType',
+                name: { kind: 'Name', value: 'AdminOrderByWithRelationInput' },
+              },
+            },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'AdminWhereInput' },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'admins' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'skip' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'skip' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'take' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'take' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'orderBy' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'orderBy' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'uid' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'image' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'uid' } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<AdminsQuery, AdminsQueryVariables>
+export const CreateAdminDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'createAdmin' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'createAdminInput' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'CreateAdminInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createAdmin' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'createAdminInput' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'createAdminInput' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'uid' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CreateAdminMutation, CreateAdminMutationVariables>
+export const UserDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'User' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'UserWhereUniqueInput' },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'user' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'image' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'uid' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<UserQuery, UserQueryVariables>
+export const CreateCourseDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'createCourse' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'createCourseInput' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'CreateCourseInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createCourse' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'createCourseInput' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'createCourseInput' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateCourseMutation,
+  CreateCourseMutationVariables
 >

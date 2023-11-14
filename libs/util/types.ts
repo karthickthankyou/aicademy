@@ -7,3 +7,8 @@ export type BaseComponent = {
   children?: ReactNode
   className?: string
 }
+
+export interface FormState {
+  data?: string | null
+  error?: string | null
+}

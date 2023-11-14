@@ -1,15 +1,28 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql'
 import { AdminsService } from './admins.service'
 import { Admin } from './entity/admin.entity'
 import { FindManyAdminArgs, FindUniqueAdminArgs } from './dtos/find.args'
 import { CreateAdminInput } from './dtos/create-admin.input'
 import { UpdateAdminInput } from './dtos/update-admin.input'
-import { AllowAuthenticated } from 'src/common/auth/auth.decorator'
+import { AllowAuthenticated, GetUser } from 'src/common/auth/auth.decorator'
+import { GetUserType } from 'src/common/util/types'
+import { PrismaService } from 'src/common/prisma/prisma.service'
+import { User } from 'src/models/users/entity/user.entity'
 
 @AllowAuthenticated('admin')
 @Resolver(() => Admin)
 export class AdminsResolver {
-  constructor(private readonly adminsService: AdminsService) {}
+  constructor(
+    private readonly adminsService: AdminsService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   @Mutation(() => Admin)
   createAdmin(@Args('createAdminInput') args: CreateAdminInput) {
@@ -26,6 +39,14 @@ export class AdminsResolver {
     return this.adminsService.findOne(args)
   }
 
+  @Query(() => Admin, { name: 'adminMe' })
+  adminMe(@GetUser() user: GetUserType) {
+    console.log('user ', user)
+    return this.prisma.admin.findUnique({
+      where: { uid: user.uid },
+    })
+  }
+
   @Mutation(() => Admin)
   updateAdmin(@Args('updateAdminInput') args: UpdateAdminInput) {
     return this.adminsService.update(args)
@@ -34,5 +55,12 @@ export class AdminsResolver {
   @Mutation(() => Admin)
   removeAdmin(@Args() args: FindUniqueAdminArgs) {
     return this.adminsService.remove(args)
+  }
+
+  @ResolveField(() => User)
+  user(@Parent() parent: Admin) {
+    return this.prisma.user.findUnique({
+      where: { uid: parent.uid },
+    })
   }
 }

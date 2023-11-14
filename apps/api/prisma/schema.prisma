@@ -61,6 +61,8 @@ model Course {
 
     admin    Admin  @relation(fields: [adminUid], references: [uid])
     adminUid String
+
+    published Boolean? @default(false)
 }
 
 model Chapter {

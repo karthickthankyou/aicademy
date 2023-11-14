@@ -1,6 +1,7 @@
 import { Field, InputType, PartialType } from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
 import {
+  BoolFilter,
   DateTimeFilter,
   IntFilter,
   RestrictProperties,
@@ -19,6 +20,7 @@ export class CourseWhereInputStrict
   implements
     RestrictProperties<CourseWhereInputStrict, Prisma.CourseWhereInput>
 {
+  published: BoolFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
   id: IntFilter

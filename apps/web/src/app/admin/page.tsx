@@ -1,9 +1,9 @@
 import { Container } from '@foundation/ui/src/components/atoms/container'
 
-export default function AnotherPage() {
+export default function AdminPage() {
   return (
     <Container className="h-screen">
-      <div className="text-3xl font-black">Hey, This is another page.</div>
+      <div className="text-3xl font-black">Hey, This is the admin page.</div>
     </Container>
   )
 }

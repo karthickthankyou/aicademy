@@ -36,15 +36,19 @@ type Credential {
 
 type Admin {
   uid: String!
+  user: User!
 }
 
 type Course {
+  published: Boolean
   description: String
   createdAt: DateTime!
   updatedAt: DateTime!
   id: Int!
   title: String!
   adminUid: String!
+  chapters: [Chapter!]!
+  chaptersLength: Int!
 }
 
 type Chapter {
@@ -63,6 +67,7 @@ type Query {
   user(where: UserWhereUniqueInput): User!
   admins(distinct: [AdminScalarFieldEnum!], where: AdminWhereInput, orderBy: [AdminOrderByWithRelationInput!], cursor: AdminWhereUniqueInput, take: Int, skip: Int): [Admin!]!
   admin(where: AdminWhereUniqueInput!): Admin!
+  adminMe: Admin!
   courses(distinct: [CourseScalarFieldEnum!], where: CourseWhereInput, orderBy: [CourseOrderByWithRelationInput!], cursor: CourseWhereUniqueInput, take: Int, skip: Int): [Course!]!
   course(where: CourseWhereUniqueInput!): Course!
   chapters(distinct: [ChapterScalarFieldEnum!], where: ChapterWhereInput, orderBy: [ChapterOrderByWithRelationInput!], cursor: ChapterWhereUniqueInput, take: Int, skip: Int): [Chapter!]!
@@ -135,6 +140,7 @@ input CourseListRelationFilter {
 }
 
 input CourseWhereInput {
+  published: BoolFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
   id: IntFilter
@@ -146,6 +152,11 @@ input CourseWhereInput {
   AND: [CourseWhereInput!]
   OR: [CourseWhereInput!]
   NOT: [CourseWhereInput!]
+}
+
+input BoolFilter {
+  equals: Boolean
+  not: Boolean
 }
 
 input DateTimeFilter {
@@ -233,9 +244,11 @@ enum CourseScalarFieldEnum {
   title
   description
   adminUid
+  published
 }
 
 input CourseOrderByWithRelationInput {
+  published: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
   id: SortOrder
@@ -322,12 +335,14 @@ input UpdateAdminInput {
 }
 
 input CreateCourseInput {
+  published: Boolean
   description: String
   title: String!
   adminUid: String!
 }
 
 input UpdateCourseInput {
+  published: Boolean
   description: String
   title: String
   adminUid: String

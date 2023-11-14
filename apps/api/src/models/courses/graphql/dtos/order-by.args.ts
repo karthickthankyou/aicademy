@@ -13,6 +13,8 @@ export class CourseOrderByWithRelationInputStrict
     >
 {
   @Field(() => Prisma.SortOrder)
+  published: Prisma.SortOrder
+  @Field(() => Prisma.SortOrder)
   createdAt: Prisma.SortOrder
   @Field(() => Prisma.SortOrder)
   updatedAt: Prisma.SortOrder

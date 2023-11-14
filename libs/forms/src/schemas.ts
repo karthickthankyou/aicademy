@@ -12,3 +12,15 @@ export const formSchemaSignin = formSchemaRegister.pick({
   email: true,
   password: true,
 })
+
+export const formSchemaCreateChapter = z.object({
+  title: z.string(),
+  content: z.string(),
+})
+
+export const formSchemaCreateCourse = z.object({
+  title: z.string(),
+  description: z.string().optional(),
+  published: z.boolean(),
+  chapters: z.array(formSchemaCreateChapter),
+})

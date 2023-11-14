@@ -36,3 +36,65 @@ query GetAuthProvider($uid: String!) {
     type
   }
 }
+
+fragment userDetails on User {
+  image
+  name
+  uid
+}
+
+query adminMe {
+  adminMe {
+    user {
+      ...userDetails
+    }
+  }
+}
+
+query courses {
+  courses {
+    id
+    title
+    chaptersLength
+    createdAt
+    published
+  }
+}
+
+query admins(
+  $skip: Int
+  $take: Int
+  $orderBy: [AdminOrderByWithRelationInput!]
+  $where: AdminWhereInput
+) {
+  admins(skip: $skip, take: $take, orderBy: $orderBy, where: $where) {
+    uid
+    user {
+      name
+      image
+      uid
+    }
+  }
+}
+
+mutation createAdmin($createAdminInput: CreateAdminInput!) {
+  createAdmin(createAdminInput: $createAdminInput) {
+    uid
+  }
+}
+
+query User($where: UserWhereUniqueInput) {
+  user(where: $where) {
+    name
+    image
+    updatedAt
+    createdAt
+    uid
+  }
+}
+
+mutation createCourse($createCourseInput: CreateCourseInput!) {
+  createCourse(createCourseInput: $createCourseInput) {
+    id
+  }
+}
