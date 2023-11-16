@@ -12,7 +12,23 @@ export class CoursesService {
       data: {
         ...createCourseInput,
         admin: { connect: { uid: adminUid } },
-        chapters: { createMany: { data: chapters } },
+        chapters: {
+          create: chapters.map((chapter) => ({
+            title: chapter.title,
+            content: chapter.content,
+            questions: {
+              create: chapter.questions.map((question) => ({
+                question: question.question,
+                answer: {
+                  create: {
+                    answer: question.answer,
+                    explanation: question.explanation,
+                  },
+                },
+              })),
+            },
+          })),
+        },
       },
     })
   }

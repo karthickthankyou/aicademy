@@ -1,49 +1,45 @@
 'use client'
 import { CourseQuery } from '@foundation/network/src/generated'
-import { Sheet } from 'lucide-react'
 
 import { cn } from '../../utils'
 import { DisplayDate } from '../molecules/DisplayDate'
-import { Title3 } from '../atoms/typography'
-import { AIChat } from '../organisms/AIChat'
-import { AITest } from '../organisms/AITest'
+import Link from 'next/link'
 
 export interface ICoursePageProps {
   course: CourseQuery['course']
 }
 
-const concatenateCourseInfo = (course: CourseQuery['course']): string => {
-  let result = `Course Title:${course.title}\n Course Description:${
-    course.description ? course.description : ''
-  }\n`
-
-  for (const chapter of course.chapters) {
-    result += `\nChapter Title: ${chapter.title}\nContent: ${chapter.content}\n`
-  }
-
-  return result
-}
 export const CoursePage = ({ course }: ICoursePageProps) => {
   return (
     <div className={cn('max-w-xl')}>
-      <h1 className={cn('text-xl')}>{course.title}</h1>
+      <div className="mt-4 whitespace-pre-wrap ">{course.title}</div>
       <DisplayDate dateString={course.createdAt} />
 
       <div className="mt-4 whitespace-pre-wrap ">{course.description}</div>
-      <div className="flex flex-col gap-4">
-        {course.chapters.map((chapter, index) => (
-          <div key={chapter.id}>
-            <Title3>
-              Chapter {index + 1}: {chapter.title}
-            </Title3>
-            <div>{chapter.content}</div>
-          </div>
+      <div className="mt-12 text-xs">Select a chapter to start learning...</div>
+    </div>
+  )
+}
+
+export const CourseSidebar = ({
+  course,
+}: {
+  course: CourseQuery['course']
+}) => {
+  return (
+    <div className="w-full max-w-lg p-4 overflow-y-auto bg-red-200 min-w-max">
+      <h1 className={cn('text-xl')}>{course.title}</h1>
+      {/* <h1>{course.description}</h1> */}
+      <h2 className="mb-4">Chapters</h2>
+      <ul>
+        {course.chapters.map((chapter) => (
+          <li key={chapter.id}>
+            <Link href={`/course/${course.id}/chapter/${chapter.id}`}>
+              {chapter.title}
+            </Link>
+          </li>
         ))}
-      </div>
-      <div className="fixed bottom-0 right-0 p-2">
-        <AIChat courseInfo={concatenateCourseInfo(course)} />
-        <AITest Icon={Sheet} courseInfo={concatenateCourseInfo(course)} />
-      </div>
+      </ul>
     </div>
   )
 }

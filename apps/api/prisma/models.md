@@ -1,0 +1,11 @@
+User
+Credentials
+AuthProvider
+Student
+Admin
+Course
+Chapter
+Question
+Answer
+Test
+TestQuestion

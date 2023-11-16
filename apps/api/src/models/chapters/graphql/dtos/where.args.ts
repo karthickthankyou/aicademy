@@ -7,6 +7,7 @@ import {
   StringFilter,
 } from 'src/common/dtos/common.input'
 import { CourseRelationFilter } from 'src/models/courses/graphql/dtos/where.args'
+import { QuestionListRelationFilter } from 'src/models/questions/graphql/dtos/where.args'
 
 @InputType()
 export class ChapterWhereUniqueInput {
@@ -18,6 +19,7 @@ export class ChapterWhereInputStrict
   implements
     RestrictProperties<ChapterWhereInputStrict, Prisma.ChapterWhereInput>
 {
+  questions: QuestionListRelationFilter
   id: IntFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter

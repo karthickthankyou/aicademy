@@ -109,13 +109,23 @@ query course($where: CourseWhereUniqueInput!) {
     chapters {
       id
       title
-      content
     }
     description
     id
     title
     createdAt
-    chaptersLength
+  }
+}
+
+query chapter($where: ChapterWhereUniqueInput!) {
+  chapter(where: $where) {
+    id
+    title
+    content
+    course {
+      title
+      description
+    }
   }
 }
 

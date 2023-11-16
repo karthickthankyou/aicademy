@@ -2,7 +2,7 @@ import { fetchGraphQL } from '@foundation/common/src/fetch'
 import { CoursePage } from '@foundation/ui/src/components/templates/CoursePage'
 import { CourseDocument } from '@foundation/network/src/generated'
 
-export default async function JobPagePage({
+export default async function CoursePagePage({
   params,
 }: {
   params: { id: string }

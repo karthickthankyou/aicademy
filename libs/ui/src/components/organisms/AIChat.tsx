@@ -22,8 +22,8 @@ export const AIChat = ({ courseInfo }: { courseInfo: string }) => {
   return (
     <SimpleDialog
       buttonText={
-        <div className="p-1 border-2 border-black rounded animate-in bg-white/10 backdrop-blur backdrop-filter">
-          <Bot />
+        <div className="flex items-center gap-2 p-1 font-semibold underline rounded underline-offset-4 animate-in bg-white/10 backdrop-blur backdrop-filter">
+          <Bot /> Doubts? Ask your AI Teacher.
         </div>
       }
     >

@@ -12,6 +12,10 @@ import { AdminsModule } from './models/admins/admins.module'
 import { CoursesModule } from './models/courses/courses.module'
 import { ChaptersModule } from './models/chapters/chapters.module'
 import { AIModule } from './common/ai/ai.module'
+import { QuestionsModule } from './models/questions/questions.module'
+import { AnswersModule } from './models/answers/answers.module'
+import { TestsModule } from './models/tests/tests.module'
+import { TestQuestionsModule } from './models/test-questions/test-questions.module'
 
 @Module({
   imports: [
@@ -34,6 +38,11 @@ import { AIModule } from './common/ai/ai.module'
     AdminsModule,
     CoursesModule,
     ChaptersModule,
+
+    QuestionsModule,
+    AnswersModule,
+    TestsModule,
+    TestQuestionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -2,6 +2,7 @@ import { Field, InputType, PartialType } from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
 import { RestrictProperties } from 'src/common/dtos/common.input'
 import { AdminOrderByWithRelationInput } from 'src/models/admins/graphql/dtos/order-by.args'
+import { StudentOrderByWithRelationInput } from 'src/models/students/graphql/dtos/order-by.args'
 
 @InputType()
 export class UserOrderByWithRelationInputStrict
@@ -11,6 +12,7 @@ export class UserOrderByWithRelationInputStrict
       Omit<Prisma.UserOrderByWithRelationInput, 'credentials' | 'authProvider'>
     >
 {
+  Student: StudentOrderByWithRelationInput
   @Field(() => AdminOrderByWithRelationInput)
   Admin: AdminOrderByWithRelationInput
   @Field(() => Prisma.SortOrder)

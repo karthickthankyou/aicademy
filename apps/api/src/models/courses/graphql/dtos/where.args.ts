@@ -9,6 +9,7 @@ import {
 } from 'src/common/dtos/common.input'
 import { AdminRelationFilter } from 'src/models/admins/graphql/dtos/where.args'
 import { ChapterListRelationFilter } from 'src/models/chapters/graphql/dtos/where.args'
+import { TestListRelationFilter } from 'src/models/tests/graphql/dtos/where.args'
 
 @InputType()
 export class CourseWhereUniqueInput {
@@ -20,6 +21,7 @@ export class CourseWhereInputStrict
   implements
     RestrictProperties<CourseWhereInputStrict, Prisma.CourseWhereInput>
 {
+  tests: TestListRelationFilter
   published: BoolFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter

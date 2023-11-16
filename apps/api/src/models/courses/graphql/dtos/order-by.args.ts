@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client'
 import { RestrictProperties } from 'src/common/dtos/common.input'
 import { AdminOrderByWithRelationInput } from 'src/models/admins/graphql/dtos/order-by.args'
 import { ChapterOrderByRelationAggregateInput } from 'src/models/chapters/graphql/dtos/order-by.args'
+import { TestOrderByRelationAggregateInput } from 'src/models/tests/graphql/dtos/order-by.args'
 
 @InputType()
 export class CourseOrderByWithRelationInputStrict
@@ -12,6 +13,7 @@ export class CourseOrderByWithRelationInputStrict
       Prisma.CourseOrderByWithRelationInput
     >
 {
+  tests: TestOrderByRelationAggregateInput
   @Field(() => Prisma.SortOrder)
   published: Prisma.SortOrder
   @Field(() => Prisma.SortOrder)

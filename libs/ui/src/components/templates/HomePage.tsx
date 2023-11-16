@@ -1,6 +1,6 @@
 import { fetchGraphQLServer } from '@foundation/common/src/fetch/server'
 import { CoursesDocument } from '@foundation/network/src/generated'
-import { CourseCard } from '../organisms/ArticleCard'
+import { CourseCard } from '../organisms/CourseCard'
 
 export const HomePage = async () => {
   const { data } = await fetchGraphQLServer({

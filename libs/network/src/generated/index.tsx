@@ -67,6 +67,49 @@ export type AdminWhereUniqueInput = {
 export type Answer = {
   __typename?: 'Answer'
   answer: Scalars['String']['output']
+  explanation?: Maybe<Scalars['String']['output']>
+  id: Scalars['Int']['output']
+  questionId: Scalars['Int']['output']
+}
+
+export type AnswerOrderByWithRelationInput = {
+  answer?: InputMaybe<SortOrder>
+  explanation?: InputMaybe<SortOrder>
+  id?: InputMaybe<SortOrder>
+  question?: InputMaybe<QuestionOrderByWithRelationInput>
+  questionId?: InputMaybe<SortOrder>
+}
+
+export type AnswerOutput = {
+  __typename?: 'AnswerOutput'
+  answer: Scalars['String']['output']
+}
+
+export type AnswerRelationFilter = {
+  is?: InputMaybe<AnswerWhereInput>
+  isNot?: InputMaybe<AnswerWhereInput>
+}
+
+export enum AnswerScalarFieldEnum {
+  Answer = 'answer',
+  Explanation = 'explanation',
+  Id = 'id',
+  QuestionId = 'questionId',
+}
+
+export type AnswerWhereInput = {
+  AND?: InputMaybe<Array<AnswerWhereInput>>
+  NOT?: InputMaybe<Array<AnswerWhereInput>>
+  OR?: InputMaybe<Array<AnswerWhereInput>>
+  answer?: InputMaybe<StringFilter>
+  explanation?: InputMaybe<StringFilter>
+  id?: InputMaybe<IntFilter>
+  question?: InputMaybe<QuestionRelationFilter>
+  questionId?: InputMaybe<IntFilter>
+}
+
+export type AnswerWhereUniqueInput = {
+  id: Scalars['Int']['input']
 }
 
 export type AuthProvider = {
@@ -88,6 +131,7 @@ export type BoolFilter = {
 export type Chapter = {
   __typename?: 'Chapter'
   content: Scalars['String']['output']
+  course: Course
   courseId: Scalars['Int']['output']
   createdAt: Scalars['DateTime']['output']
   id: Scalars['Int']['output']
@@ -111,8 +155,14 @@ export type ChapterOrderByWithRelationInput = {
   courseId?: InputMaybe<SortOrder>
   createdAt?: InputMaybe<SortOrder>
   id?: InputMaybe<SortOrder>
+  questions?: InputMaybe<QuestionOrderByRelationAggregateInput>
   title?: InputMaybe<SortOrder>
   updatedAt?: InputMaybe<SortOrder>
+}
+
+export type ChapterRelationFilter = {
+  is?: InputMaybe<ChapterWhereInput>
+  isNot?: InputMaybe<ChapterWhereInput>
 }
 
 export enum ChapterScalarFieldEnum {
@@ -133,6 +183,7 @@ export type ChapterWhereInput = {
   courseId?: InputMaybe<IntFilter>
   createdAt?: InputMaybe<DateTimeFilter>
   id?: InputMaybe<IntFilter>
+  questions?: InputMaybe<QuestionListRelationFilter>
   title?: InputMaybe<StringFilter>
   updatedAt?: InputMaybe<DateTimeFilter>
 }
@@ -172,6 +223,7 @@ export type CourseOrderByWithRelationInput = {
   description?: InputMaybe<SortOrder>
   id?: InputMaybe<SortOrder>
   published?: InputMaybe<SortOrder>
+  tests?: InputMaybe<TestOrderByRelationAggregateInput>
   title?: InputMaybe<SortOrder>
   updatedAt?: InputMaybe<SortOrder>
 }
@@ -202,6 +254,7 @@ export type CourseWhereInput = {
   description?: InputMaybe<StringFilter>
   id?: InputMaybe<IntFilter>
   published?: InputMaybe<BoolFilter>
+  tests?: InputMaybe<TestListRelationFilter>
   title?: InputMaybe<StringFilter>
   updatedAt?: InputMaybe<DateTimeFilter>
 }
@@ -214,6 +267,12 @@ export type CreateAdminInput = {
   uid: Scalars['String']['input']
 }
 
+export type CreateAnswerInput = {
+  answer: Scalars['String']['input']
+  explanation?: InputMaybe<Scalars['String']['input']>
+  questionId: Scalars['Int']['input']
+}
+
 export type CreateChapterInput = {
   content: Scalars['String']['input']
   courseId: Scalars['Int']['input']
@@ -222,6 +281,7 @@ export type CreateChapterInput = {
 
 export type CreateChapterInputWithoutCourseId = {
   content: Scalars['String']['input']
+  questions: Array<CreateQuestionInputWithoutChapterId>
   title: Scalars['String']['input']
 }
 
@@ -231,6 +291,31 @@ export type CreateCourseInput = {
   description?: InputMaybe<Scalars['String']['input']>
   published?: InputMaybe<Scalars['Boolean']['input']>
   title: Scalars['String']['input']
+}
+
+export type CreateQuestionInput = {
+  chapterId: Scalars['Int']['input']
+  question: Scalars['String']['input']
+}
+
+export type CreateQuestionInputWithoutChapterId = {
+  answer: Scalars['String']['input']
+  explanation?: InputMaybe<Scalars['String']['input']>
+  question: Scalars['String']['input']
+}
+
+export type CreateTestInput = {
+  aiTotalScore?: InputMaybe<Scalars['Int']['input']>
+  courseId: Scalars['Int']['input']
+  studentUid: Scalars['String']['input']
+}
+
+export type CreateTestQuestionInput = {
+  aiFeedback?: InputMaybe<Scalars['String']['input']>
+  aiScore?: InputMaybe<Scalars['Int']['input']>
+  questionId: Scalars['Int']['input']
+  studentAnswer: Scalars['String']['input']
+  testId: Scalars['Int']['input']
 }
 
 export type CreateUserWithCredentialsInput = {
@@ -282,22 +367,38 @@ export type Mark = {
 export type Mutation = {
   __typename?: 'Mutation'
   createAdmin: Admin
+  createAnswer: Answer
   createChapter: Chapter
   createCourse: Course
+  createQuestion: Question
+  createTest: Test
+  createTestQuestion: TestQuestion
   createUserWithCredentials: User
   createUserWithProvider: User
   removeAdmin: Admin
+  removeAnswer: Answer
   removeChapter: Chapter
   removeCourse: Course
+  removeQuestion: Question
+  removeTest: Test
+  removeTestQuestion: TestQuestion
   removeUser: User
   updateAdmin: Admin
+  updateAnswer: Answer
   updateChapter: Chapter
   updateCourse: Course
+  updateQuestion: Question
+  updateTest: Test
+  updateTestQuestion: TestQuestion
   updateUser: User
 }
 
 export type MutationCreateAdminArgs = {
   createAdminInput: CreateAdminInput
+}
+
+export type MutationCreateAnswerArgs = {
+  createAnswerInput: CreateAnswerInput
 }
 
 export type MutationCreateChapterArgs = {
@@ -306,6 +407,18 @@ export type MutationCreateChapterArgs = {
 
 export type MutationCreateCourseArgs = {
   createCourseInput: CreateCourseInput
+}
+
+export type MutationCreateQuestionArgs = {
+  createQuestionInput: CreateQuestionInput
+}
+
+export type MutationCreateTestArgs = {
+  createTestInput: CreateTestInput
+}
+
+export type MutationCreateTestQuestionArgs = {
+  createTestQuestionInput: CreateTestQuestionInput
 }
 
 export type MutationCreateUserWithCredentialsArgs = {
@@ -320,12 +433,28 @@ export type MutationRemoveAdminArgs = {
   where: AdminWhereUniqueInput
 }
 
+export type MutationRemoveAnswerArgs = {
+  where: AnswerWhereUniqueInput
+}
+
 export type MutationRemoveChapterArgs = {
   where: ChapterWhereUniqueInput
 }
 
 export type MutationRemoveCourseArgs = {
   where: CourseWhereUniqueInput
+}
+
+export type MutationRemoveQuestionArgs = {
+  where: QuestionWhereUniqueInput
+}
+
+export type MutationRemoveTestArgs = {
+  where: TestWhereUniqueInput
+}
+
+export type MutationRemoveTestQuestionArgs = {
+  where: TestQuestionWhereUniqueInput
 }
 
 export type MutationRemoveUserArgs = {
@@ -336,12 +465,28 @@ export type MutationUpdateAdminArgs = {
   updateAdminInput: UpdateAdminInput
 }
 
+export type MutationUpdateAnswerArgs = {
+  updateAnswerInput: UpdateAnswerInput
+}
+
 export type MutationUpdateChapterArgs = {
   updateChapterInput: UpdateChapterInput
 }
 
 export type MutationUpdateCourseArgs = {
   updateCourseInput: UpdateCourseInput
+}
+
+export type MutationUpdateQuestionArgs = {
+  updateQuestionInput: UpdateQuestionInput
+}
+
+export type MutationUpdateTestArgs = {
+  updateTestInput: UpdateTestInput
+}
+
+export type MutationUpdateTestQuestionArgs = {
+  updateTestQuestionInput: UpdateTestQuestionInput
 }
 
 export type MutationUpdateUserArgs = {
@@ -353,14 +498,22 @@ export type Query = {
   admin: Admin
   adminMe: Admin
   admins: Array<Admin>
+  answer: Answer
+  answers: Array<Answer>
   chapter: Chapter
   chapters: Array<Chapter>
   course: Course
   courses: Array<Course>
-  doubt: Answer
+  doubt: AnswerOutput
   getAuthProvider?: Maybe<AuthProvider>
   getCredentials?: Maybe<User>
-  takeTest: Question
+  question: Question
+  questions: Array<Question>
+  takeTest: QuestionOutput
+  test: Test
+  testQuestion: TestQuestion
+  testQuestions: Array<TestQuestion>
+  tests: Array<Test>
   user: User
   users: Array<User>
   verifyAnswer: Mark
@@ -377,6 +530,19 @@ export type QueryAdminsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>
   take?: InputMaybe<Scalars['Int']['input']>
   where?: InputMaybe<AdminWhereInput>
+}
+
+export type QueryAnswerArgs = {
+  where: AnswerWhereUniqueInput
+}
+
+export type QueryAnswersArgs = {
+  cursor?: InputMaybe<AnswerWhereUniqueInput>
+  distinct?: InputMaybe<Array<AnswerScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<AnswerOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']['input']>
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: InputMaybe<AnswerWhereInput>
 }
 
 export type QueryChapterArgs = {
@@ -418,8 +584,47 @@ export type QueryGetCredentialsArgs = {
   email: Scalars['String']['input']
 }
 
+export type QueryQuestionArgs = {
+  where: QuestionWhereUniqueInput
+}
+
+export type QueryQuestionsArgs = {
+  cursor?: InputMaybe<QuestionWhereUniqueInput>
+  distinct?: InputMaybe<Array<QuestionScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<QuestionOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']['input']>
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: InputMaybe<QuestionWhereInput>
+}
+
 export type QueryTakeTestArgs = {
   courseInfo: Scalars['String']['input']
+}
+
+export type QueryTestArgs = {
+  where: TestWhereUniqueInput
+}
+
+export type QueryTestQuestionArgs = {
+  where: TestQuestionWhereUniqueInput
+}
+
+export type QueryTestQuestionsArgs = {
+  cursor?: InputMaybe<TestQuestionWhereUniqueInput>
+  distinct?: InputMaybe<Array<TestQuestionScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<TestQuestionOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']['input']>
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: InputMaybe<TestQuestionWhereInput>
+}
+
+export type QueryTestsArgs = {
+  cursor?: InputMaybe<TestWhereUniqueInput>
+  distinct?: InputMaybe<Array<TestScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<TestOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']['input']>
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: InputMaybe<TestWhereInput>
 }
 
 export type QueryUserArgs = {
@@ -448,7 +653,68 @@ export enum QueryMode {
 
 export type Question = {
   __typename?: 'Question'
+  chapterId: Scalars['Int']['output']
+  createdAt: Scalars['DateTime']['output']
+  id: Scalars['Int']['output']
   question: Scalars['String']['output']
+  updatedAt: Scalars['DateTime']['output']
+}
+
+export type QuestionListRelationFilter = {
+  every?: InputMaybe<QuestionWhereInput>
+  none?: InputMaybe<QuestionWhereInput>
+  some?: InputMaybe<QuestionWhereInput>
+}
+
+export type QuestionOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>
+}
+
+export type QuestionOrderByWithRelationInput = {
+  answer?: InputMaybe<AnswerOrderByWithRelationInput>
+  chapter?: InputMaybe<ChapterOrderByWithRelationInput>
+  chapterId?: InputMaybe<SortOrder>
+  createdAt?: InputMaybe<SortOrder>
+  id?: InputMaybe<SortOrder>
+  question?: InputMaybe<SortOrder>
+  testQuestions?: InputMaybe<TestQuestionOrderByRelationAggregateInput>
+  updatedAt?: InputMaybe<SortOrder>
+}
+
+export type QuestionOutput = {
+  __typename?: 'QuestionOutput'
+  question: Scalars['String']['output']
+}
+
+export type QuestionRelationFilter = {
+  is?: InputMaybe<QuestionWhereInput>
+  isNot?: InputMaybe<QuestionWhereInput>
+}
+
+export enum QuestionScalarFieldEnum {
+  ChapterId = 'chapterId',
+  CreatedAt = 'createdAt',
+  Id = 'id',
+  Question = 'question',
+  UpdatedAt = 'updatedAt',
+}
+
+export type QuestionWhereInput = {
+  AND?: InputMaybe<Array<QuestionWhereInput>>
+  NOT?: InputMaybe<Array<QuestionWhereInput>>
+  OR?: InputMaybe<Array<QuestionWhereInput>>
+  answer?: InputMaybe<AnswerRelationFilter>
+  chapter?: InputMaybe<ChapterRelationFilter>
+  chapterId?: InputMaybe<IntFilter>
+  createdAt?: InputMaybe<DateTimeFilter>
+  id?: InputMaybe<IntFilter>
+  question?: InputMaybe<StringFilter>
+  testQuestions?: InputMaybe<TestQuestionListRelationFilter>
+  updatedAt?: InputMaybe<DateTimeFilter>
+}
+
+export type QuestionWhereUniqueInput = {
+  id: Scalars['Int']['input']
 }
 
 export enum SortOrder {
@@ -471,8 +737,158 @@ export type StringFilter = {
   startsWith?: InputMaybe<Scalars['String']['input']>
 }
 
+export type StudentOrderByWithRelationInput = {
+  tests?: InputMaybe<TestOrderByRelationAggregateInput>
+  uid?: InputMaybe<SortOrder>
+  user?: InputMaybe<UserOrderByWithRelationInput>
+}
+
+export type StudentRelationFilter = {
+  is?: InputMaybe<StudentWhereInput>
+  isNot?: InputMaybe<StudentWhereInput>
+}
+
+export type StudentWhereInput = {
+  AND?: InputMaybe<Array<StudentWhereInput>>
+  NOT?: InputMaybe<Array<StudentWhereInput>>
+  OR?: InputMaybe<Array<StudentWhereInput>>
+  tests?: InputMaybe<TestListRelationFilter>
+  uid?: InputMaybe<StringFilter>
+  user?: InputMaybe<UserRelationFilter>
+}
+
+export type Test = {
+  __typename?: 'Test'
+  aiTotalScore?: Maybe<Scalars['Int']['output']>
+  courseId: Scalars['Int']['output']
+  createdAt: Scalars['DateTime']['output']
+  id: Scalars['Int']['output']
+  studentUid: Scalars['String']['output']
+  updatedAt: Scalars['DateTime']['output']
+}
+
+export type TestListRelationFilter = {
+  every?: InputMaybe<TestWhereInput>
+  none?: InputMaybe<TestWhereInput>
+  some?: InputMaybe<TestWhereInput>
+}
+
+export type TestOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>
+}
+
+export type TestOrderByWithRelationInput = {
+  Student?: InputMaybe<StudentOrderByWithRelationInput>
+  aiTotalScore?: InputMaybe<SortOrder>
+  course?: InputMaybe<CourseOrderByWithRelationInput>
+  courseId?: InputMaybe<SortOrder>
+  createdAt?: InputMaybe<SortOrder>
+  id?: InputMaybe<SortOrder>
+  questions?: InputMaybe<TestQuestionOrderByRelationAggregateInput>
+  studentUid?: InputMaybe<SortOrder>
+  updatedAt?: InputMaybe<SortOrder>
+}
+
+export type TestQuestion = {
+  __typename?: 'TestQuestion'
+  aiFeedback?: Maybe<Scalars['String']['output']>
+  aiScore?: Maybe<Scalars['Int']['output']>
+  id: Scalars['Int']['output']
+  questionId: Scalars['Int']['output']
+  studentAnswer: Scalars['String']['output']
+  testId: Scalars['Int']['output']
+}
+
+export type TestQuestionListRelationFilter = {
+  every?: InputMaybe<TestQuestionWhereInput>
+  none?: InputMaybe<TestQuestionWhereInput>
+  some?: InputMaybe<TestQuestionWhereInput>
+}
+
+export type TestQuestionOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>
+}
+
+export type TestQuestionOrderByWithRelationInput = {
+  Test?: InputMaybe<TestOrderByWithRelationInput>
+  aiFeedback?: InputMaybe<SortOrder>
+  aiScore?: InputMaybe<SortOrder>
+  id?: InputMaybe<SortOrder>
+  question?: InputMaybe<QuestionOrderByWithRelationInput>
+  questionId?: InputMaybe<SortOrder>
+  studentAnswer?: InputMaybe<SortOrder>
+  testId?: InputMaybe<SortOrder>
+}
+
+export enum TestQuestionScalarFieldEnum {
+  AiFeedback = 'aiFeedback',
+  AiScore = 'aiScore',
+  Id = 'id',
+  QuestionId = 'questionId',
+  StudentAnswer = 'studentAnswer',
+  TestId = 'testId',
+}
+
+export type TestQuestionWhereInput = {
+  AND?: InputMaybe<Array<TestQuestionWhereInput>>
+  NOT?: InputMaybe<Array<TestQuestionWhereInput>>
+  OR?: InputMaybe<Array<TestQuestionWhereInput>>
+  Test?: InputMaybe<TestRelationFilter>
+  aiFeedback?: InputMaybe<StringFilter>
+  aiScore?: InputMaybe<IntFilter>
+  id?: InputMaybe<IntFilter>
+  question?: InputMaybe<QuestionRelationFilter>
+  questionId?: InputMaybe<IntFilter>
+  studentAnswer?: InputMaybe<StringFilter>
+  testId?: InputMaybe<IntFilter>
+}
+
+export type TestQuestionWhereUniqueInput = {
+  id: Scalars['Int']['input']
+}
+
+export type TestRelationFilter = {
+  is?: InputMaybe<TestWhereInput>
+  isNot?: InputMaybe<TestWhereInput>
+}
+
+export enum TestScalarFieldEnum {
+  AiTotalScore = 'aiTotalScore',
+  CourseId = 'courseId',
+  CreatedAt = 'createdAt',
+  Id = 'id',
+  StudentUid = 'studentUid',
+  UpdatedAt = 'updatedAt',
+}
+
+export type TestWhereInput = {
+  AND?: InputMaybe<Array<TestWhereInput>>
+  NOT?: InputMaybe<Array<TestWhereInput>>
+  OR?: InputMaybe<Array<TestWhereInput>>
+  Student?: InputMaybe<StudentRelationFilter>
+  aiTotalScore?: InputMaybe<IntFilter>
+  course?: InputMaybe<CourseRelationFilter>
+  courseId?: InputMaybe<IntFilter>
+  createdAt?: InputMaybe<DateTimeFilter>
+  id?: InputMaybe<IntFilter>
+  questions?: InputMaybe<TestQuestionListRelationFilter>
+  studentUid?: InputMaybe<StringFilter>
+  updatedAt?: InputMaybe<DateTimeFilter>
+}
+
+export type TestWhereUniqueInput = {
+  id: Scalars['Int']['input']
+}
+
 export type UpdateAdminInput = {
   uid: Scalars['String']['input']
+}
+
+export type UpdateAnswerInput = {
+  answer?: InputMaybe<Scalars['String']['input']>
+  explanation?: InputMaybe<Scalars['String']['input']>
+  id: Scalars['Int']['input']
+  questionId?: InputMaybe<Scalars['Int']['input']>
 }
 
 export type UpdateChapterInput = {
@@ -489,6 +905,28 @@ export type UpdateCourseInput = {
   id: Scalars['Int']['input']
   published?: InputMaybe<Scalars['Boolean']['input']>
   title?: InputMaybe<Scalars['String']['input']>
+}
+
+export type UpdateQuestionInput = {
+  chapterId?: InputMaybe<Scalars['Int']['input']>
+  id: Scalars['Int']['input']
+  question?: InputMaybe<Scalars['String']['input']>
+}
+
+export type UpdateTestInput = {
+  aiTotalScore?: InputMaybe<Scalars['Int']['input']>
+  courseId?: InputMaybe<Scalars['Int']['input']>
+  id: Scalars['Int']['input']
+  studentUid?: InputMaybe<Scalars['String']['input']>
+}
+
+export type UpdateTestQuestionInput = {
+  aiFeedback?: InputMaybe<Scalars['String']['input']>
+  aiScore?: InputMaybe<Scalars['Int']['input']>
+  id: Scalars['Int']['input']
+  questionId?: InputMaybe<Scalars['Int']['input']>
+  studentAnswer?: InputMaybe<Scalars['String']['input']>
+  testId?: InputMaybe<Scalars['Int']['input']>
 }
 
 export type UpdateUserInput = {
@@ -509,6 +947,7 @@ export type User = {
 
 export type UserOrderByWithRelationInput = {
   Admin?: InputMaybe<AdminOrderByWithRelationInput>
+  Student?: InputMaybe<StudentOrderByWithRelationInput>
   createdAt?: InputMaybe<SortOrder>
   image?: InputMaybe<SortOrder>
   name?: InputMaybe<SortOrder>
@@ -534,6 +973,7 @@ export type UserWhereInput = {
   Admin?: InputMaybe<AdminRelationFilter>
   NOT?: InputMaybe<Array<UserWhereInput>>
   OR?: InputMaybe<Array<UserWhereInput>>
+  Student?: InputMaybe<StudentRelationFilter>
   createdAt?: InputMaybe<DateTimeFilter>
   image?: InputMaybe<StringFilter>
   name?: InputMaybe<StringFilter>
@@ -707,13 +1147,26 @@ export type CourseQuery = {
     id: number
     title: string
     createdAt: any
-    chaptersLength: number
-    chapters: Array<{
-      __typename?: 'Chapter'
-      id: number
+    chapters: Array<{ __typename?: 'Chapter'; id: number; title: string }>
+  }
+}
+
+export type ChapterQueryVariables = Exact<{
+  where: ChapterWhereUniqueInput
+}>
+
+export type ChapterQuery = {
+  __typename?: 'Query'
+  chapter: {
+    __typename?: 'Chapter'
+    id: number
+    title: string
+    content: string
+    course: {
+      __typename?: 'Course'
       title: string
-      content: string
-    }>
+      description?: string | null
+    }
   }
 }
 
@@ -724,7 +1177,7 @@ export type DoubtQueryVariables = Exact<{
 
 export type DoubtQuery = {
   __typename?: 'Query'
-  doubt: { __typename?: 'Answer'; answer: string }
+  doubt: { __typename?: 'AnswerOutput'; answer: string }
 }
 
 export type TakeTestQueryVariables = Exact<{
@@ -733,7 +1186,7 @@ export type TakeTestQueryVariables = Exact<{
 
 export type TakeTestQuery = {
   __typename?: 'Query'
-  takeTest: { __typename?: 'Question'; question: string }
+  takeTest: { __typename?: 'QuestionOutput'; question: string }
 }
 
 export type VerifyAnswerQueryVariables = Exact<{
@@ -756,6 +1209,7 @@ export const namedOperations = {
     admins: 'admins',
     User: 'User',
     course: 'course',
+    chapter: 'chapter',
     doubt: 'doubt',
     takeTest: 'takeTest',
     verifyAnswer: 'verifyAnswer',
@@ -1498,10 +1952,6 @@ export const CourseDocument = /*#__PURE__*/ {
                     selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'title' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'content' },
-                      },
                     ],
                   },
                 },
@@ -1509,10 +1959,6 @@ export const CourseDocument = /*#__PURE__*/ {
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'title' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'chaptersLength' },
-                },
               ],
             },
           },
@@ -1521,6 +1967,73 @@ export const CourseDocument = /*#__PURE__*/ {
     },
   ],
 } as unknown as DocumentNode<CourseQuery, CourseQueryVariables>
+export const ChapterDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'chapter' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'ChapterWhereUniqueInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'chapter' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'content' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'course' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'description' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<ChapterQuery, ChapterQueryVariables>
 export const DoubtDocument = /*#__PURE__*/ {
   kind: 'Document',
   definitions: [

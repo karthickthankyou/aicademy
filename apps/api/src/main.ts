@@ -9,9 +9,9 @@ async function bootstrap() {
   console.log(add(14, 4))
 
   const config = new DocumentBuilder()
-    .setTitle('Ultimate fullstack | Karthick Ragavendran')
+    .setTitle('AIcademy | Karthick Ragavendran')
     .setDescription(
-      `The Editor in chief API.
+      `The Aicademy API.
 <h1>Looking for the graphql api?</h1>
 Go to <a href="/graphql" target="_blank">/graphql</a>.
 Or,

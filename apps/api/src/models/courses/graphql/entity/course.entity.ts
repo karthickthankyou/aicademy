@@ -14,17 +14,15 @@ export class Course implements RestrictProperties<Course, CourseType> {
   description: string
 
   adminUid: string
-  // Todo Add below to make optional fields optional.
-  // @Field({ nullable: true })
 }
 
 @ObjectType()
-export class Answer {
+export class AnswerOutput {
   answer: string
 }
 
 @ObjectType()
-export class Question {
+export class QuestionOutput {
   question: string
 }
 

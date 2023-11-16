@@ -97,6 +97,25 @@ export class AIService {
 
     const chatCompletion = await this.openAI.chat.completions.create({
       messages,
+      functions: [
+        {
+          name: 'student_result',
+          description: 'Result of the student exam.',
+          parameters: {
+            type: 'object',
+            properties: {
+              feedback: {
+                type: 'string',
+                description: 'Feedback given on the students answer.',
+              },
+              marks: {
+                type: 'number',
+                description: 'Marks given for the answer out of 100',
+              },
+            },
+          },
+        },
+      ],
       model: 'gpt-3.5-turbo',
       max_tokens: 400,
     })

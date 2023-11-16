@@ -7,7 +7,12 @@ import {
   Parent,
 } from '@nestjs/graphql'
 import { CoursesService } from './courses.service'
-import { Answer, Course, Mark, Question } from './entity/course.entity'
+import {
+  AnswerOutput,
+  Course,
+  Mark,
+  QuestionOutput,
+} from './entity/course.entity'
 import { FindManyCourseArgs, FindUniqueCourseArgs } from './dtos/find.args'
 import { CreateCourseInput } from './dtos/create-course.input'
 import { UpdateCourseInput } from './dtos/update-course.input'
@@ -29,12 +34,13 @@ export class CoursesResolver {
   createCourse(@Args('createCourseInput') args: CreateCourseInput) {
     return this.coursesService.create(args)
   }
+
   @Query(() => [Course], { name: 'courses' })
   courses(@Args() args: FindManyCourseArgs) {
     return this.coursesService.findAll(args)
   }
 
-  @Query(() => Answer, { name: 'doubt' })
+  @Query(() => AnswerOutput, { name: 'doubt' })
   async doubt(
     @Args('question') question: string,
     @Args('courseInfo') courseInfo: string,
@@ -43,7 +49,7 @@ export class CoursesResolver {
     return { answer }
   }
 
-  @Query(() => Question, { name: 'takeTest' })
+  @Query(() => QuestionOutput, { name: 'takeTest' })
   async takeTest(@Args('courseInfo') courseInfo: string) {
     const question = await this.ai.takeTest({ courseInfo })
     return { question }

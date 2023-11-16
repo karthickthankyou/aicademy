@@ -28,6 +28,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '../atoms/accordion'
+import { Title3 } from '../atoms/typography'
 
 export interface INewCourseProps {}
 
@@ -65,12 +66,12 @@ export const NewCourseContent = () => {
         <DialogMessage open={open} setOpen={setOpen}>
           {message}
         </DialogMessage>
-        <h1 className="mb-2 text-lg font-semibold">Post new job</h1>
+        <h1 className="mb-2 text-lg font-semibold">New course</h1>
         <Label title="Title">
           <Input {...register('title')} placeholder="Title" />
         </Label>
-        <Label title="Body">
-          <TextArea {...register('description')} placeholder="Body" />
+        <Label title="Description">
+          <TextArea {...register('description')} placeholder="Description..." />
         </Label>
 
         <Label title="Published">
@@ -86,7 +87,10 @@ export const NewCourseContent = () => {
             )}
           />
         </Label>
-        <AddChapter />
+        <Title3>Chapters</Title3>
+        <div className="px-4">
+          <AddChapter />
+        </div>
         <Button type="submit">Submit</Button>
       </form>
     </div>
@@ -113,7 +117,7 @@ export const AddChapter = () => {
         <Accordion type="single" key={item.id} collapsible>
           <AccordionItem value="item-1">
             <AccordionTrigger>
-              {chapters?.[chapterIndex]?.title || '[Empty]'}
+              {chapters?.[chapterIndex]?.title || '-'}
             </AccordionTrigger>
             <AccordionContent>
               <div className={`flex justify-end my-2`}>
@@ -128,7 +132,7 @@ export const AddChapter = () => {
                   onFocus={() => setHovered(item.id)}
                   onBlur={() => setHovered(null)}
                 >
-                  remove slot type
+                  remove chapter
                 </Button>
               </div>
 
@@ -151,11 +155,13 @@ export const AddChapter = () => {
                   error={errors.chapters?.[chapterIndex]?.content?.message}
                 >
                   <TextArea
-                    rows={16}
                     placeholder="Content"
                     {...register(`chapters.${chapterIndex}.content`)}
                   />
                 </Label>
+              </div>
+              <div className="px-4">
+                <AddQuestion chapterIndex={chapterIndex} />
               </div>
             </AccordionContent>
           </AccordionItem>
@@ -169,10 +175,117 @@ export const AddChapter = () => {
             append({
               content: '',
               title: '',
+              questions: [],
             })
           }
         >
-          <Plus className="w-4 h-4" /> Add slots
+          <Plus className="w-4 h-4" /> Add chapter
+        </Button>
+      </div>
+    </div>
+  )
+}
+
+export const AddQuestion = ({ chapterIndex }: { chapterIndex: number }) => {
+  const {
+    control,
+    register,
+    formState: { errors },
+  } = useFormContext<FormTypeCreateCourse>()
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: `chapters.${chapterIndex}.questions`,
+  })
+  const [hovered, setHovered] = useState<string | null>(null)
+
+  return (
+    <div className="p-4 bg-gray-100 rounded">
+      {fields.map((item, questionIndex) => (
+        <Accordion type="single" key={item.id} collapsible>
+          <AccordionItem value="item-1">
+            <AccordionTrigger>{item.question || '-'}</AccordionTrigger>
+            <AccordionContent>
+              <div className={`flex justify-end my-2`}>
+                <Button
+                  variant={'ghost'}
+                  className="text-xs text-gray-600 underline underline-offset-2"
+                  onClick={() => {
+                    remove(chapterIndex)
+                  }}
+                  onMouseEnter={() => setHovered(item.id)}
+                  onMouseLeave={() => setHovered(null)}
+                  onFocus={() => setHovered(item.id)}
+                  onBlur={() => setHovered(null)}
+                >
+                  remove question
+                </Button>
+              </div>
+
+              <div
+                className={`flex flex-col ${
+                  hovered === item.id ? 'bg-strip' : null
+                }`}
+              >
+                <Label
+                  title="Question"
+                  error={
+                    errors.chapters?.[chapterIndex]?.questions?.[questionIndex]
+                      ?.question?.message
+                  }
+                >
+                  <Input
+                    placeholder="Question"
+                    {...register(
+                      `chapters.${chapterIndex}.questions.${questionIndex}.question`,
+                    )}
+                  />
+                </Label>
+                <Label
+                  title="Answer"
+                  error={
+                    errors.chapters?.[chapterIndex]?.questions?.[questionIndex]
+                      ?.answer?.message
+                  }
+                >
+                  <TextArea
+                    placeholder="Answer"
+                    {...register(
+                      `chapters.${chapterIndex}.questions.${questionIndex}.answer`,
+                    )}
+                  />
+                </Label>
+                <Label
+                  title="Explanation"
+                  error={
+                    errors.chapters?.[chapterIndex]?.questions?.[questionIndex]
+                      ?.explanation?.message
+                  }
+                >
+                  <TextArea
+                    placeholder="Explanation"
+                    {...register(
+                      `chapters.${chapterIndex}.questions.${questionIndex}.explanation`,
+                    )}
+                  />
+                </Label>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      ))}
+      <div>
+        <Button
+          className="flex items-center justify-center w-full py-2 text-xs"
+          variant={'outline'}
+          onClick={() =>
+            append({
+              answer: '',
+              question: '',
+              explanation: '',
+            })
+          }
+        >
+          <Plus className="w-4 h-4" /> Add question
         </Button>
       </div>
     </div>

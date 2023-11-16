@@ -20,6 +20,7 @@ model User {
     credentials  Credentials?
     authProvider AuthProvider?
     Admin        Admin?
+    Student      Student?
 }
 
 model Credentials {
@@ -43,6 +44,14 @@ enum AuthProviderType {
     CREDENTIALS
 }
 
+model Student {
+    uid String @id
+
+    user User @relation(fields: [uid], references: [uid])
+
+    tests Test[]
+}
+
 model Admin {
     uid String @id
 
@@ -63,6 +72,7 @@ model Course {
     adminUid String
 
     published Boolean? @default(false)
+    tests     Test[]
 }
 
 model Chapter {
@@ -70,8 +80,54 @@ model Chapter {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    title    String
-    content  String
-    courseId Int
-    course   Course @relation(fields: [courseId], references: [id])
+    title     String
+    content   String
+    courseId  Int
+    course    Course     @relation(fields: [courseId], references: [id])
+    questions Question[]
+}
+
+model Question {
+    id            Int            @id @default(autoincrement())
+    createdAt     DateTime       @default(now())
+    updatedAt     DateTime       @updatedAt
+    question      String
+    answer        Answer?
+    chapterId     Int
+    chapter       Chapter        @relation(fields: [chapterId], references: [id])
+    testQuestions TestQuestion[]
+}
+
+model Answer {
+    id          Int      @id @default(autoincrement())
+    answer      String
+    explanation String?
+    questionId  Int      @unique
+    question    Question @relation(fields: [questionId], references: [id])
+}
+
+model Test {
+    id        Int            @id @default(autoincrement())
+    createdAt DateTime       @default(now())
+    updatedAt DateTime       @updatedAt
+    courseId  Int
+    course    Course         @relation(fields: [courseId], references: [id])
+    questions TestQuestion[]
+
+    aiTotalScore Int?
+    Student      Student @relation(fields: [studentUid], references: [uid])
+    studentUid   String
+}
+
+model TestQuestion {
+    id            Int    @id @default(autoincrement())
+    studentAnswer String
+
+    aiScore    Int?
+    aiFeedback String?
+
+    testId     Int
+    Test       Test     @relation(fields: [testId], references: [id])
+    questionId Int
+    question   Question @relation(fields: [questionId], references: [id])
 }
