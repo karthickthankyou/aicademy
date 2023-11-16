@@ -16,6 +16,7 @@ import { QuestionsModule } from './models/questions/questions.module'
 import { AnswersModule } from './models/answers/answers.module'
 import { TestsModule } from './models/tests/tests.module'
 import { TestQuestionsModule } from './models/test-questions/test-questions.module'
+import { StudentsModule } from './models/students/students.module'
 
 @Module({
   imports: [
@@ -41,6 +42,8 @@ import { TestQuestionsModule } from './models/test-questions/test-questions.modu
 
     QuestionsModule,
     AnswersModule,
+
+    StudentsModule,
     TestsModule,
     TestQuestionsModule,
   ],

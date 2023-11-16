@@ -49,12 +49,6 @@ export class CoursesResolver {
     return { answer }
   }
 
-  @Query(() => QuestionOutput, { name: 'takeTest' })
-  async takeTest(@Args('courseInfo') courseInfo: string) {
-    const question = await this.ai.takeTest({ courseInfo })
-    return { question }
-  }
-
   @Query(() => Mark, { name: 'verifyAnswer' })
   async verifyAnswer(
     @Args('courseInfo') courseInfo: string,

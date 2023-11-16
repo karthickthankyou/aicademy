@@ -55,10 +55,6 @@ type AnswerOutput {
   answer: String!
 }
 
-type QuestionOutput {
-  question: String!
-}
-
 type Mark {
   mark: String!
 }
@@ -95,6 +91,15 @@ type Test {
   updatedAt: DateTime!
   courseId: Int!
   studentUid: String!
+  questions: [Question!]!
+  results: [TestQuestion!]!
+  course: Course!
+}
+
+type TestResultOutput {
+  questionId: String!
+  feedback: String!
+  marks: Int!
 }
 
 type TestQuestion {
@@ -104,6 +109,11 @@ type TestQuestion {
   studentAnswer: String!
   testId: Int!
   questionId: Int!
+  question: Question!
+}
+
+type Student {
+  uid: String!
 }
 
 type Query {
@@ -116,7 +126,6 @@ type Query {
   adminMe: Admin!
   courses(distinct: [CourseScalarFieldEnum!], where: CourseWhereInput, orderBy: [CourseOrderByWithRelationInput!], cursor: CourseWhereUniqueInput, take: Int, skip: Int): [Course!]!
   doubt(question: String!, courseInfo: String!): AnswerOutput!
-  takeTest(courseInfo: String!): QuestionOutput!
   verifyAnswer(courseInfo: String!, question: String!, answer: String!): Mark!
   course(where: CourseWhereUniqueInput!): Course!
   chapters(distinct: [ChapterScalarFieldEnum!], where: ChapterWhereInput, orderBy: [ChapterOrderByWithRelationInput!], cursor: ChapterWhereUniqueInput, take: Int, skip: Int): [Chapter!]!
@@ -125,7 +134,11 @@ type Query {
   question(where: QuestionWhereUniqueInput!): Question!
   answers(distinct: [AnswerScalarFieldEnum!], where: AnswerWhereInput, orderBy: [AnswerOrderByWithRelationInput!], cursor: AnswerWhereUniqueInput, take: Int, skip: Int): [Answer!]!
   answer(where: AnswerWhereUniqueInput!): Answer!
+  students(distinct: [StudentScalarFieldEnum!], where: StudentWhereInput, orderBy: [StudentOrderByWithRelationInput!], cursor: StudentWhereUniqueInput, take: Int, skip: Int): [Student!]!
+  student(where: StudentWhereUniqueInput!): Student!
+  studentMe: Student!
   tests(distinct: [TestScalarFieldEnum!], where: TestWhereInput, orderBy: [TestOrderByWithRelationInput!], cursor: TestWhereUniqueInput, take: Int, skip: Int): [Test!]!
+  myTests(distinct: [TestScalarFieldEnum!], where: TestWhereInput, orderBy: [TestOrderByWithRelationInput!], cursor: TestWhereUniqueInput, take: Int, skip: Int): [Test!]!
   test(where: TestWhereUniqueInput!): Test!
   testQuestions(distinct: [TestQuestionScalarFieldEnum!], where: TestQuestionWhereInput, orderBy: [TestQuestionOrderByWithRelationInput!], cursor: TestQuestionWhereUniqueInput, take: Int, skip: Int): [TestQuestion!]!
   testQuestion(where: TestQuestionWhereUniqueInput!): TestQuestion!
@@ -519,6 +532,14 @@ input AnswerWhereUniqueInput {
   id: Int!
 }
 
+enum StudentScalarFieldEnum {
+  uid
+}
+
+input StudentWhereUniqueInput {
+  uid: String!
+}
+
 enum TestScalarFieldEnum {
   id
   createdAt
@@ -588,7 +609,11 @@ type Mutation {
   createAnswer(createAnswerInput: CreateAnswerInput!): Answer!
   updateAnswer(updateAnswerInput: UpdateAnswerInput!): Answer!
   removeAnswer(where: AnswerWhereUniqueInput!): Answer!
-  createTest(createTestInput: CreateTestInput!): Test!
+  createStudent(createStudentInput: CreateStudentInput!): Student!
+  updateStudent(updateStudentInput: UpdateStudentInput!): Student!
+  removeStudent(where: StudentWhereUniqueInput!): Student!
+  createTest(courseId: Int!): Test!
+  submitTest(submitTestInput: [SubmitTestInput!]!, testId: Int!): [TestResultOutput!]!
   updateTest(updateTestInput: UpdateTestInput!): Test!
   removeTest(where: TestWhereUniqueInput!): Test!
   createTestQuestion(createTestQuestionInput: CreateTestQuestionInput!): TestQuestion!
@@ -690,10 +715,18 @@ input UpdateAnswerInput {
   id: Int!
 }
 
-input CreateTestInput {
-  aiTotalScore: Int
-  courseId: Int!
-  studentUid: String!
+input CreateStudentInput {
+  uid: String!
+}
+
+input UpdateStudentInput {
+  uid: String!
+}
+
+input SubmitTestInput {
+  id: Int!
+  question: String!
+  userAnswer: String
 }
 
 input UpdateTestInput {

@@ -54,6 +54,11 @@ export function Sidebar() {
               <Lock className="w-4 h-4" /> Admin
             </div>
           </Link>
+          <Link href="/student">
+            <div className="flex items-center gap-2">
+              <Lock className="w-4 h-4" /> Student
+            </div>
+          </Link>
         </div>
 
         <SheetFooter>

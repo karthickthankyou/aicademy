@@ -27,11 +27,11 @@ export const CourseSidebar = ({
   course: CourseQuery['course']
 }) => {
   return (
-    <div className="w-full max-w-lg p-4 overflow-y-auto bg-red-200 min-w-max">
+    <div className="w-full max-w-lg p-4 bg-red-100">
       <h1 className={cn('text-xl')}>{course.title}</h1>
-      {/* <h1>{course.description}</h1> */}
-      <h2 className="mb-4">Chapters</h2>
-      <ul>
+
+      <h2 className="mt-4 mb-2 font-semibold">Chapters</h2>
+      <ul className="space-y-1">
         {course.chapters.map((chapter) => (
           <li key={chapter.id}>
             <Link href={`/course/${course.id}/chapter/${chapter.id}`}>
@@ -40,6 +40,12 @@ export const CourseSidebar = ({
           </li>
         ))}
       </ul>
+      <Link
+        href={`/test/${course.id}`}
+        className="inline-block mt-4 font-semibold underline underline-offset-4"
+      >
+        Take test
+      </Link>
     </div>
   )
 }

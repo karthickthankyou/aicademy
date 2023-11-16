@@ -31,3 +31,13 @@ export const formSchemaCreateCourse = z.object({
   published: z.boolean(),
   chapters: z.array(formSchemaCreateChapter),
 })
+
+export const formSchemaTest = z.object({
+  answers: z.array(
+    z.object({
+      id: z.number(),
+      question: z.string(),
+      userAnswer: z.string().optional().nullable(),
+    }),
+  ),
+})

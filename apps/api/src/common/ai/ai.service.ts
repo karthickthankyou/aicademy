@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common'
 
 import OpenAI from 'openai'
 import { ChatCompletionMessageParam } from 'openai/resources'
+import { TestResultOutput } from 'src/models/tests/rest/entity/test.entity'
 
 @Injectable()
 export class AIService {
@@ -44,6 +45,89 @@ export class AIService {
     return chatCompletion.choices
       .map((choice) => choice.message.content)
       .join(' ')
+  }
+
+  async add(a: number, b: number): Promise<number> {
+    return a + b
+  }
+
+  async submitTest({
+    answers,
+  }: {
+    answers: {
+      userAnswer: string
+      correctAnswer: string
+      question: string
+      questionId: number
+    }[]
+  }): Promise<TestResultOutput[]> {
+    const messages: ChatCompletionMessageParam[] = []
+    messages.push({
+      role: 'system',
+      content:
+        'You are a teacher. Look at the user answers and give them marks per question',
+    })
+    // Adding each question and answer pair to the conversation
+    answers.forEach((answer, index) => {
+      messages.push({
+        role: 'system',
+        content: `QuestionId: ${answer.questionId}, Question: ${answer.question}`,
+      })
+      messages.push({
+        role: 'user',
+        content: `User Answer: ${answer.userAnswer}`,
+      })
+      messages.push({
+        role: 'system',
+        content: `Correct Answer: ${answer.correctAnswer}`,
+      })
+    })
+
+    messages.push({
+      role: 'system',
+      content:
+        'Return in a json format [{questionId:number, feedback: string, marks: number}]',
+    })
+
+    messages.push({
+      role: 'system',
+      content:
+        'Make sure the marks are between 0 to 100. 0 for the wrong answer and 100 for the perfect answer.',
+    })
+    // console.log('submitTest submitesd to ai... ', answers)
+
+    const chatCompletion = await this.openAI.chat.completions.create({
+      messages,
+      //   functions: [
+      //     {
+      //       name: 'studentResult',
+      //       description: 'Result of the student exam.',
+      //       parameters: {
+      //         type: 'object',
+      //         properties: {
+      //           feedback: {
+      //             type: 'string',
+      //             description: 'Feedback given on the students answer.',
+      //           },
+      //           marks: {
+      //             type: 'number',
+      //             description: 'Marks given for the answer out of 100',
+      //           },
+      //         },
+      //       },
+      //     },
+      //   ],
+      model: 'gpt-3.5-turbo',
+      max_tokens: 400,
+    })
+
+    console.log(
+      'chatCompletion.choices[0].message.content',
+      chatCompletion.choices[0].message.content,
+    )
+    const result = JSON.parse(chatCompletion.choices[0].message.content)
+    console.log('chatCompletion... ', result)
+    return result
   }
 
   async takeTest({ courseInfo }: { courseInfo: string }) {

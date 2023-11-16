@@ -304,10 +304,8 @@ export type CreateQuestionInputWithoutChapterId = {
   question: Scalars['String']['input']
 }
 
-export type CreateTestInput = {
-  aiTotalScore?: InputMaybe<Scalars['Int']['input']>
-  courseId: Scalars['Int']['input']
-  studentUid: Scalars['String']['input']
+export type CreateStudentInput = {
+  uid: Scalars['String']['input']
 }
 
 export type CreateTestQuestionInput = {
@@ -371,6 +369,7 @@ export type Mutation = {
   createChapter: Chapter
   createCourse: Course
   createQuestion: Question
+  createStudent: Student
   createTest: Test
   createTestQuestion: TestQuestion
   createUserWithCredentials: User
@@ -380,14 +379,17 @@ export type Mutation = {
   removeChapter: Chapter
   removeCourse: Course
   removeQuestion: Question
+  removeStudent: Student
   removeTest: Test
   removeTestQuestion: TestQuestion
   removeUser: User
+  submitTest: Array<TestResultOutput>
   updateAdmin: Admin
   updateAnswer: Answer
   updateChapter: Chapter
   updateCourse: Course
   updateQuestion: Question
+  updateStudent: Student
   updateTest: Test
   updateTestQuestion: TestQuestion
   updateUser: User
@@ -413,8 +415,12 @@ export type MutationCreateQuestionArgs = {
   createQuestionInput: CreateQuestionInput
 }
 
+export type MutationCreateStudentArgs = {
+  createStudentInput: CreateStudentInput
+}
+
 export type MutationCreateTestArgs = {
-  createTestInput: CreateTestInput
+  courseId: Scalars['Int']['input']
 }
 
 export type MutationCreateTestQuestionArgs = {
@@ -449,6 +455,10 @@ export type MutationRemoveQuestionArgs = {
   where: QuestionWhereUniqueInput
 }
 
+export type MutationRemoveStudentArgs = {
+  where: StudentWhereUniqueInput
+}
+
 export type MutationRemoveTestArgs = {
   where: TestWhereUniqueInput
 }
@@ -459,6 +469,11 @@ export type MutationRemoveTestQuestionArgs = {
 
 export type MutationRemoveUserArgs = {
   where?: InputMaybe<UserWhereUniqueInput>
+}
+
+export type MutationSubmitTestArgs = {
+  submitTestInput: Array<SubmitTestInput>
+  testId: Scalars['Int']['input']
 }
 
 export type MutationUpdateAdminArgs = {
@@ -479,6 +494,10 @@ export type MutationUpdateCourseArgs = {
 
 export type MutationUpdateQuestionArgs = {
   updateQuestionInput: UpdateQuestionInput
+}
+
+export type MutationUpdateStudentArgs = {
+  updateStudentInput: UpdateStudentInput
 }
 
 export type MutationUpdateTestArgs = {
@@ -507,9 +526,12 @@ export type Query = {
   doubt: AnswerOutput
   getAuthProvider?: Maybe<AuthProvider>
   getCredentials?: Maybe<User>
+  myTests: Array<Test>
   question: Question
   questions: Array<Question>
-  takeTest: QuestionOutput
+  student: Student
+  studentMe: Student
+  students: Array<Student>
   test: Test
   testQuestion: TestQuestion
   testQuestions: Array<TestQuestion>
@@ -584,6 +606,15 @@ export type QueryGetCredentialsArgs = {
   email: Scalars['String']['input']
 }
 
+export type QueryMyTestsArgs = {
+  cursor?: InputMaybe<TestWhereUniqueInput>
+  distinct?: InputMaybe<Array<TestScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<TestOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']['input']>
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: InputMaybe<TestWhereInput>
+}
+
 export type QueryQuestionArgs = {
   where: QuestionWhereUniqueInput
 }
@@ -597,8 +628,17 @@ export type QueryQuestionsArgs = {
   where?: InputMaybe<QuestionWhereInput>
 }
 
-export type QueryTakeTestArgs = {
-  courseInfo: Scalars['String']['input']
+export type QueryStudentArgs = {
+  where: StudentWhereUniqueInput
+}
+
+export type QueryStudentsArgs = {
+  cursor?: InputMaybe<StudentWhereUniqueInput>
+  distinct?: InputMaybe<Array<StudentScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<StudentOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']['input']>
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: InputMaybe<StudentWhereInput>
 }
 
 export type QueryTestArgs = {
@@ -681,11 +721,6 @@ export type QuestionOrderByWithRelationInput = {
   updatedAt?: InputMaybe<SortOrder>
 }
 
-export type QuestionOutput = {
-  __typename?: 'QuestionOutput'
-  question: Scalars['String']['output']
-}
-
 export type QuestionRelationFilter = {
   is?: InputMaybe<QuestionWhereInput>
   isNot?: InputMaybe<QuestionWhereInput>
@@ -737,6 +772,11 @@ export type StringFilter = {
   startsWith?: InputMaybe<Scalars['String']['input']>
 }
 
+export type Student = {
+  __typename?: 'Student'
+  uid: Scalars['String']['output']
+}
+
 export type StudentOrderByWithRelationInput = {
   tests?: InputMaybe<TestOrderByRelationAggregateInput>
   uid?: InputMaybe<SortOrder>
@@ -748,6 +788,10 @@ export type StudentRelationFilter = {
   isNot?: InputMaybe<StudentWhereInput>
 }
 
+export enum StudentScalarFieldEnum {
+  Uid = 'uid',
+}
+
 export type StudentWhereInput = {
   AND?: InputMaybe<Array<StudentWhereInput>>
   NOT?: InputMaybe<Array<StudentWhereInput>>
@@ -757,12 +801,25 @@ export type StudentWhereInput = {
   user?: InputMaybe<UserRelationFilter>
 }
 
+export type StudentWhereUniqueInput = {
+  uid: Scalars['String']['input']
+}
+
+export type SubmitTestInput = {
+  id: Scalars['Int']['input']
+  question: Scalars['String']['input']
+  userAnswer?: InputMaybe<Scalars['String']['input']>
+}
+
 export type Test = {
   __typename?: 'Test'
   aiTotalScore?: Maybe<Scalars['Int']['output']>
+  course: Course
   courseId: Scalars['Int']['output']
   createdAt: Scalars['DateTime']['output']
   id: Scalars['Int']['output']
+  questions: Array<Question>
+  results: Array<TestQuestion>
   studentUid: Scalars['String']['output']
   updatedAt: Scalars['DateTime']['output']
 }
@@ -794,6 +851,7 @@ export type TestQuestion = {
   aiFeedback?: Maybe<Scalars['String']['output']>
   aiScore?: Maybe<Scalars['Int']['output']>
   id: Scalars['Int']['output']
+  question: Question
   questionId: Scalars['Int']['output']
   studentAnswer: Scalars['String']['output']
   testId: Scalars['Int']['output']
@@ -850,6 +908,13 @@ export type TestQuestionWhereUniqueInput = {
 export type TestRelationFilter = {
   is?: InputMaybe<TestWhereInput>
   isNot?: InputMaybe<TestWhereInput>
+}
+
+export type TestResultOutput = {
+  __typename?: 'TestResultOutput'
+  feedback: Scalars['String']['output']
+  marks: Scalars['Int']['output']
+  questionId: Scalars['String']['output']
 }
 
 export enum TestScalarFieldEnum {
@@ -911,6 +976,10 @@ export type UpdateQuestionInput = {
   chapterId?: InputMaybe<Scalars['Int']['input']>
   id: Scalars['Int']['input']
   question?: InputMaybe<Scalars['String']['input']>
+}
+
+export type UpdateStudentInput = {
+  uid: Scalars['String']['input']
 }
 
 export type UpdateTestInput = {
@@ -1180,15 +1249,6 @@ export type DoubtQuery = {
   doubt: { __typename?: 'AnswerOutput'; answer: string }
 }
 
-export type TakeTestQueryVariables = Exact<{
-  courseInfo: Scalars['String']['input']
-}>
-
-export type TakeTestQuery = {
-  __typename?: 'Query'
-  takeTest: { __typename?: 'QuestionOutput'; question: string }
-}
-
 export type VerifyAnswerQueryVariables = Exact<{
   courseInfo: Scalars['String']['input']
   question: Scalars['String']['input']
@@ -1198,6 +1258,68 @@ export type VerifyAnswerQueryVariables = Exact<{
 export type VerifyAnswerQuery = {
   __typename?: 'Query'
   verifyAnswer: { __typename?: 'Mark'; mark: string }
+}
+
+export type CreateTestMutationVariables = Exact<{
+  courseId: Scalars['Int']['input']
+}>
+
+export type CreateTestMutation = {
+  __typename?: 'Mutation'
+  createTest: {
+    __typename?: 'Test'
+    id: number
+    questions: Array<{ __typename?: 'Question'; id: number; question: string }>
+    course: { __typename?: 'Course'; id: number; title: string }
+  }
+}
+
+export type StudentMeQueryVariables = Exact<{ [key: string]: never }>
+
+export type StudentMeQuery = {
+  __typename?: 'Query'
+  studentMe: { __typename?: 'Student'; uid: string }
+}
+
+export type SubmitTestMutationVariables = Exact<{
+  submitTestInput: Array<SubmitTestInput> | SubmitTestInput
+  testId: Scalars['Int']['input']
+}>
+
+export type SubmitTestMutation = {
+  __typename?: 'Mutation'
+  submitTest: Array<{
+    __typename?: 'TestResultOutput'
+    feedback: string
+    marks: number
+    questionId: string
+  }>
+}
+
+export type MyTestsQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>
+  take?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<
+    Array<TestOrderByWithRelationInput> | TestOrderByWithRelationInput
+  >
+  where?: InputMaybe<TestWhereInput>
+}>
+
+export type MyTestsQuery = {
+  __typename?: 'Query'
+  myTests: Array<{
+    __typename?: 'Test'
+    aiTotalScore?: number | null
+    id: number
+    course: { __typename?: 'Course'; title: string }
+    results: Array<{
+      __typename?: 'TestQuestion'
+      aiFeedback?: string | null
+      aiScore?: number | null
+      studentAnswer: string
+      question: { __typename?: 'Question'; question: string }
+    }>
+  }>
 }
 
 export const namedOperations = {
@@ -1211,14 +1333,17 @@ export const namedOperations = {
     course: 'course',
     chapter: 'chapter',
     doubt: 'doubt',
-    takeTest: 'takeTest',
     verifyAnswer: 'verifyAnswer',
+    studentMe: 'studentMe',
+    myTests: 'myTests',
   },
   Mutation: {
     createUserWithCredentials: 'createUserWithCredentials',
     CreateUserWithProvider: 'CreateUserWithProvider',
     createAdmin: 'createAdmin',
     createCourse: 'createCourse',
+    createTest: 'createTest',
+    submitTest: 'submitTest',
   },
   Fragment: {
     userDetails: 'userDetails',
@@ -2107,57 +2232,6 @@ export const DoubtDocument = /*#__PURE__*/ {
     },
   ],
 } as unknown as DocumentNode<DoubtQuery, DoubtQueryVariables>
-export const TakeTestDocument = /*#__PURE__*/ {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'takeTest' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'courseInfo' },
-          },
-          type: {
-            kind: 'NonNullType',
-            type: {
-              kind: 'NamedType',
-              name: { kind: 'Name', value: 'String' },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'takeTest' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'courseInfo' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'courseInfo' },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'question' } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<TakeTestQuery, TakeTestQueryVariables>
 export const VerifyAnswerDocument = /*#__PURE__*/ {
   kind: 'Document',
   definitions: [
@@ -2253,3 +2327,326 @@ export const VerifyAnswerDocument = /*#__PURE__*/ {
     },
   ],
 } as unknown as DocumentNode<VerifyAnswerQuery, VerifyAnswerQueryVariables>
+export const CreateTestDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'createTest' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'courseId' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createTest' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'courseId' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'courseId' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'questions' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'question' },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'course' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CreateTestMutation, CreateTestMutationVariables>
+export const StudentMeDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'studentMe' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'studentMe' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'uid' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<StudentMeQuery, StudentMeQueryVariables>
+export const SubmitTestDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'submitTest' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'submitTestInput' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'ListType',
+              type: {
+                kind: 'NonNullType',
+                type: {
+                  kind: 'NamedType',
+                  name: { kind: 'Name', value: 'SubmitTestInput' },
+                },
+              },
+            },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'testId' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'submitTest' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'submitTestInput' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'submitTestInput' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'testId' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'testId' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'feedback' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'marks' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'questionId' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<SubmitTestMutation, SubmitTestMutationVariables>
+export const MyTestsDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'myTests' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'orderBy' },
+          },
+          type: {
+            kind: 'ListType',
+            type: {
+              kind: 'NonNullType',
+              type: {
+                kind: 'NamedType',
+                name: { kind: 'Name', value: 'TestOrderByWithRelationInput' },
+              },
+            },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'TestWhereInput' },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'myTests' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'skip' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'skip' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'take' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'take' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'orderBy' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'orderBy' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'aiTotalScore' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'course' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                    ],
+                  },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'results' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'aiFeedback' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'aiScore' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'studentAnswer' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'question' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'question' },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<MyTestsQuery, MyTestsQueryVariables>

@@ -5,7 +5,7 @@ import {
 } from '@foundation/network/src/generated'
 
 import { UserSidebar } from '@foundation/ui/src/components/organisms/UserSidebar'
-
+import { StickyLayout } from '@foundation/ui/src/components/organisms/StickyLayout'
 import { CourseSidebar } from '@foundation/ui/src/components/templates/CoursePage'
 
 export default async function CoursePageLayout({
@@ -32,14 +32,14 @@ export default async function CoursePageLayout({
     return <div>Course not found.</div>
   }
 
-  //   console.log('data ,error', data, error)
-
   return (
-    <div className="flex">
-      <div className="hidden w-full max-w-xs sm:block">
-        <CourseSidebar course={data.course} />
-      </div>
-
+    <StickyLayout
+      sidebarContent={
+        <div className="hidden sm:block">
+          <CourseSidebar course={data.course} />
+        </div>
+      }
+    >
       <div className="flex-grow">
         <div className="sm:hidden">
           <UserSidebar>
@@ -50,6 +50,6 @@ export default async function CoursePageLayout({
           {children}
         </div>
       </div>
-    </div>
+    </StickyLayout>
   )
 }

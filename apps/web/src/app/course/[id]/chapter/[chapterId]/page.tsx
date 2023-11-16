@@ -3,6 +3,7 @@ import {
   ChapterDocument,
   ChapterQuery,
 } from '@foundation/network/src/generated'
+import { Title } from '@foundation/ui/src/components/atoms/typography'
 import { AIChat } from '@foundation/ui/src/components/organisms/AIChat'
 
 const concatenateCourseInfo = (chapter: ChapterQuery['chapter']): string => {
@@ -28,8 +29,10 @@ const ChapterPage = async ({ params }: { params: { chapterId: string } }) => {
   }
   return (
     <div>
-      <div>{data?.chapter.title}</div>
-      <div className="whitespace-pre-wrap">{data?.chapter.content}</div>
+      <Title>{data?.chapter.title}</Title>
+      <div className="max-w-lg whitespace-pre-wrap">
+        {data?.chapter.content}
+      </div>
       <div className="mt-4">
         <AIChat courseInfo={concatenateCourseInfo(data?.chapter)} />
       </div>

@@ -1,4 +1,11 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql'
 import { TestQuestionsService } from './test-questions.service'
 import { TestQuestion } from './entity/test-question.entity'
 import {
@@ -7,10 +14,15 @@ import {
 } from './dtos/find.args'
 import { CreateTestQuestionInput } from './dtos/create-test-question.input'
 import { UpdateTestQuestionInput } from './dtos/update-test-question.input'
+import { PrismaService } from 'src/common/prisma/prisma.service'
+import { Question } from 'src/models/questions/graphql/entity/question.entity'
 
 @Resolver(() => TestQuestion)
 export class TestQuestionsResolver {
-  constructor(private readonly testQuestionsService: TestQuestionsService) {}
+  constructor(
+    private readonly testQuestionsService: TestQuestionsService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   @Mutation(() => TestQuestion)
   createTestQuestion(
@@ -39,5 +51,12 @@ export class TestQuestionsResolver {
   @Mutation(() => TestQuestion)
   removeTestQuestion(@Args() args: FindUniqueTestQuestionArgs) {
     return this.testQuestionsService.remove(args)
+  }
+
+  @ResolveField(() => Question)
+  question(@Parent() parent: TestQuestion) {
+    return this.prisma.question.findUnique({
+      where: { id: parent.questionId },
+    })
   }
 }

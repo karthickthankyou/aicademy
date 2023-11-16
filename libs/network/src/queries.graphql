@@ -135,14 +135,59 @@ query doubt($question: String!, $courseInfo: String!) {
   }
 }
 
-query takeTest($courseInfo: String!) {
-  takeTest(courseInfo: $courseInfo) {
-    question
-  }
-}
-
 query verifyAnswer($courseInfo: String!, $question: String!, $answer: String!) {
   verifyAnswer(courseInfo: $courseInfo, question: $question, answer: $answer) {
     mark
+  }
+}
+
+mutation createTest($courseId: Int!) {
+  createTest(courseId: $courseId) {
+    id
+    questions {
+      id
+      question
+    }
+    course {
+      id
+      title
+    }
+  }
+}
+
+query studentMe {
+  studentMe {
+    uid
+  }
+}
+
+mutation submitTest($submitTestInput: [SubmitTestInput!]!, $testId: Int!) {
+  submitTest(submitTestInput: $submitTestInput, testId: $testId) {
+    feedback
+    marks
+    questionId
+  }
+}
+
+query myTests(
+  $skip: Int
+  $take: Int
+  $orderBy: [TestOrderByWithRelationInput!]
+  $where: TestWhereInput
+) {
+  myTests(skip: $skip, take: $take, orderBy: $orderBy, where: $where) {
+    aiTotalScore
+    course {
+      title
+    }
+    id
+    results {
+      aiFeedback
+      aiScore
+      studentAnswer
+      question {
+        question
+      }
+    }
   }
 }

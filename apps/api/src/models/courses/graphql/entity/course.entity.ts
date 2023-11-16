@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql'
+import { ArgsType, Field, InputType, ObjectType } from '@nestjs/graphql'
 import { Course as CourseType } from '@prisma/client'
 import { RestrictProperties } from 'src/common/dtos/common.input'
 
@@ -23,6 +23,12 @@ export class AnswerOutput {
 
 @ObjectType()
 export class QuestionOutput {
+  question: string
+}
+
+@ObjectType()
+export class QuestionsOutput {
+  id: number
   question: string
 }
 
