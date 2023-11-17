@@ -21,6 +21,7 @@ export class CourseWhereInputStrict
   implements
     RestrictProperties<CourseWhereInputStrict, Prisma.CourseWhereInput>
 {
+  image: StringFilter
   tests: TestListRelationFilter
   published: BoolFilter
   createdAt: DateTimeFilter

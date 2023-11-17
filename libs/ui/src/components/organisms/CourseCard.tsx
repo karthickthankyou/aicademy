@@ -1,9 +1,9 @@
 import { CoursesQuery } from '@foundation/network/src/generated'
 
 import Link from 'next/link'
+import Image from 'next/image'
 
 import { cn } from '../../utils'
-import { DisplayDate } from '../molecules/DisplayDate'
 
 export const CourseCard = ({
   course,
@@ -13,18 +13,25 @@ export const CourseCard = ({
   return (
     <div>
       <Link href={`/course/${course.id}`}>
+        <Image
+          src={course.image || ''}
+          alt=""
+          className="object-cover w-full rounded shadow-lg aspect-square"
+          width={300}
+          height={300}
+        />
         <div
           className={cn(
-            'text-lg font-medium hover:underline line-clamp-2 max-w-lg underline-offset-4 ',
+            'font-medium hover:underline mt-2 line-clamp-2 max-w-lg underline-offset-4 ',
           )}
         >
           {course.title}
         </div>
       </Link>
       <div className="max-w-md mt-1 text-sm gray-500 line-clamp-2">
-        {course.chaptersLength}
+        {course.chaptersLength} chapters
       </div>
-      <DisplayDate dateString={course.createdAt} className="mt-2" />
+      {/* <DisplayDate dateString={course.createdAt} className="mt-2" /> */}
     </div>
   )
 }

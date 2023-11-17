@@ -5,6 +5,8 @@ import { RestrictProperties } from 'src/common/dtos/common.input'
 @ObjectType()
 export class Course implements RestrictProperties<Course, CourseType> {
   @Field({ nullable: true })
+  image: string
+  @Field({ nullable: true })
   published: boolean
   createdAt: Date
   updatedAt: Date

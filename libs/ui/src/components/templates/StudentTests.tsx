@@ -6,6 +6,7 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from '../atoms/accordion'
+import { format } from 'date-fns'
 
 export const StudentTests = ({ tests }: { tests: MyTestsQuery['myTests'] }) => {
   return (
@@ -14,8 +15,16 @@ export const StudentTests = ({ tests }: { tests: MyTestsQuery['myTests'] }) => {
         {tests.map((test) => (
           <AccordionItem value={test.id.toString()} key={test.id}>
             <AccordionTrigger>
-              <div>{test.course.title}</div>
-              <div>{test.aiTotalScore}</div>
+              <div className="flex flex-col items-start font-normal text-md">
+                <div className="text-lg font-medium">{test.course.title}</div>
+                <div className="text-xs">
+                  {format(new Date(test.createdAt), 'PPp')}
+                </div>
+                <div className="mt-1">
+                  {test.aiTotalScore}
+                  <span className="text-xs">/500</span>
+                </div>
+              </div>
             </AccordionTrigger>
             <AccordionContent>
               <StudentTestCard test={test} />

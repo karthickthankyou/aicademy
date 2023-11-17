@@ -4,15 +4,24 @@ import { CourseQuery } from '@foundation/network/src/generated'
 import { cn } from '../../utils'
 import { DisplayDate } from '../molecules/DisplayDate'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export interface ICoursePageProps {
   course: CourseQuery['course']
 }
 
 export const CoursePage = ({ course }: ICoursePageProps) => {
+  console.log('course ', course)
   return (
     <div className={cn('max-w-xl')}>
-      <div className="mt-4 whitespace-pre-wrap ">{course.title}</div>
+      <Image
+        src={course.image || ''}
+        alt=""
+        className="object-cover w-full rounded shadow-lg aspect-video"
+        width={300}
+        height={300}
+      />
+      <div className="mt-4 whitespace-pre-wrap ">{course.title}I</div>
       <DisplayDate dateString={course.createdAt} />
 
       <div className="mt-4 whitespace-pre-wrap ">{course.description}</div>

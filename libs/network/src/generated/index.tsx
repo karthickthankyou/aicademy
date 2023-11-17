@@ -200,6 +200,7 @@ export type Course = {
   createdAt: Scalars['DateTime']['output']
   description?: Maybe<Scalars['String']['output']>
   id: Scalars['Int']['output']
+  image?: Maybe<Scalars['String']['output']>
   published?: Maybe<Scalars['Boolean']['output']>
   title: Scalars['String']['output']
   updatedAt: Scalars['DateTime']['output']
@@ -222,6 +223,7 @@ export type CourseOrderByWithRelationInput = {
   createdAt?: InputMaybe<SortOrder>
   description?: InputMaybe<SortOrder>
   id?: InputMaybe<SortOrder>
+  image?: InputMaybe<SortOrder>
   published?: InputMaybe<SortOrder>
   tests?: InputMaybe<TestOrderByRelationAggregateInput>
   title?: InputMaybe<SortOrder>
@@ -238,6 +240,7 @@ export enum CourseScalarFieldEnum {
   CreatedAt = 'createdAt',
   Description = 'description',
   Id = 'id',
+  Image = 'image',
   Published = 'published',
   Title = 'title',
   UpdatedAt = 'updatedAt',
@@ -253,6 +256,7 @@ export type CourseWhereInput = {
   createdAt?: InputMaybe<DateTimeFilter>
   description?: InputMaybe<StringFilter>
   id?: InputMaybe<IntFilter>
+  image?: InputMaybe<StringFilter>
   published?: InputMaybe<BoolFilter>
   tests?: InputMaybe<TestListRelationFilter>
   title?: InputMaybe<StringFilter>
@@ -289,6 +293,7 @@ export type CreateCourseInput = {
   adminUid: Scalars['String']['input']
   chapters: Array<CreateChapterInputWithoutCourseId>
   description?: InputMaybe<Scalars['String']['input']>
+  image?: InputMaybe<Scalars['String']['input']>
   published?: InputMaybe<Scalars['Boolean']['input']>
   title: Scalars['String']['input']
 }
@@ -968,6 +973,7 @@ export type UpdateCourseInput = {
   chapters?: InputMaybe<Array<CreateChapterInputWithoutCourseId>>
   description?: InputMaybe<Scalars['String']['input']>
   id: Scalars['Int']['input']
+  image?: InputMaybe<Scalars['String']['input']>
   published?: InputMaybe<Scalars['Boolean']['input']>
   title?: InputMaybe<Scalars['String']['input']>
 }
@@ -1144,6 +1150,7 @@ export type CoursesQuery = {
     chaptersLength: number
     createdAt: any
     published?: boolean | null
+    image?: string | null
   }>
 }
 
@@ -1212,6 +1219,7 @@ export type CourseQuery = {
   __typename?: 'Query'
   course: {
     __typename?: 'Course'
+    image?: string | null
     description?: string | null
     id: number
     title: string
@@ -1310,6 +1318,7 @@ export type MyTestsQuery = {
   myTests: Array<{
     __typename?: 'Test'
     aiTotalScore?: number | null
+    createdAt: any
     id: number
     course: { __typename?: 'Course'; title: string }
     results: Array<{
@@ -1751,6 +1760,7 @@ export const CoursesDocument = /*#__PURE__*/ {
                 },
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'published' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'image' } },
               ],
             },
           },
@@ -2080,6 +2090,7 @@ export const CourseDocument = /*#__PURE__*/ {
                     ],
                   },
                 },
+                { kind: 'Field', name: { kind: 'Name', value: 'image' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'description' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'title' } },
@@ -2597,6 +2608,7 @@ export const MyTestsDocument = /*#__PURE__*/ {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'aiTotalScore' },
                 },
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'course' },

@@ -60,8 +60,10 @@ export class CoursesResolver {
   }
 
   @Query(() => Course, { name: 'course' })
-  findOne(@Args() args: FindUniqueCourseArgs) {
-    return this.coursesService.findOne(args)
+  async findOne(@Args() args: FindUniqueCourseArgs) {
+    const course = await this.coursesService.findOne(args)
+    console.log('course ', course)
+    return course
   }
 
   @AllowAuthenticated('admin')

@@ -29,6 +29,7 @@ export const formSchemaCreateCourse = z.object({
   title: z.string(),
   description: z.string().optional(),
   published: z.boolean(),
+  image: z.any().optional(),
   chapters: z.array(formSchemaCreateChapter),
 })
 

@@ -1,5 +1,5 @@
 'use client'
-
+import { useImageUpload } from '@foundation/util/imageUpload'
 import {
   Controller,
   useFieldArray,
@@ -29,6 +29,7 @@ import {
   AccordionTrigger,
 } from '../atoms/accordion'
 import { Title3 } from '../atoms/typography'
+import { ImagePreview } from '../molecules/ImagePreview'
 
 export interface INewCourseProps {}
 
@@ -41,16 +42,24 @@ export const NewCourse = () => {
 }
 
 export const NewCourseContent = () => {
-  const { register, handleSubmit, reset, control } =
+  const { register, handleSubmit, reset, control, watch, resetField } =
     useFormContext<FormTypeCreateCourse>()
   const [open, setOpen] = useState(false)
   const [message, setMesage] = useState('')
+
+  const [, uploadImages] = useImageUpload()
+  const { image } = watch()
 
   return (
     <div className="overflow-y-auto">
       <form
         onSubmit={handleSubmit(async (formData) => {
-          const { data, error } = await createCourse(formData)
+          const images = await uploadImages(image)
+
+          const { data, error } = await createCourse({
+            ...formData,
+            image: images[0],
+          })
           setOpen(true)
           if (data) {
             setMesage(` ${data} 🎉`)
@@ -73,7 +82,20 @@ export const NewCourseContent = () => {
         <Label title="Description">
           <TextArea {...register('description')} placeholder="Description..." />
         </Label>
-
+        <ImagePreview src={image || ''} clearImage={() => resetField('image')}>
+          <Controller
+            control={control}
+            name={`image`}
+            render={({ field }) => (
+              <Input
+                type="file"
+                accept="image/*"
+                multiple={false}
+                onChange={(e) => field.onChange(e?.target?.files)}
+              />
+            )}
+          />
+        </ImagePreview>
         <Label title="Published">
           <Controller
             control={control}
@@ -117,7 +139,9 @@ export const AddChapter = () => {
         <Accordion type="single" key={item.id} collapsible>
           <AccordionItem value="item-1">
             <AccordionTrigger>
-              {chapters?.[chapterIndex]?.title || '-'}
+              {chapters?.[chapterIndex]?.title || (
+                <span className="italic text-gray-500">No Title</span>
+              )}
             </AccordionTrigger>
             <AccordionContent>
               <div className={`flex justify-end my-2`}>

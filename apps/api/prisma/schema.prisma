@@ -66,6 +66,7 @@ model Course {
 
     title       String    @unique
     description String?
+    image       String?
     chapters    Chapter[]
 
     admin    Admin  @relation(fields: [adminUid], references: [uid])

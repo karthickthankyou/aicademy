@@ -98,36 +98,51 @@ export class AIService {
 
     const chatCompletion = await this.openAI.chat.completions.create({
       messages,
-      //   functions: [
-      //     {
-      //       name: 'studentResult',
-      //       description: 'Result of the student exam.',
-      //       parameters: {
-      //         type: 'object',
-      //         properties: {
-      //           feedback: {
-      //             type: 'string',
-      //             description: 'Feedback given on the students answer.',
-      //           },
-      //           marks: {
-      //             type: 'number',
-      //             description: 'Marks given for the answer out of 100',
-      //           },
-      //         },
-      //       },
-      //     },
-      //   ],
+      functions: [
+        {
+          name: 'studentResult',
+          description: 'Result of the student exam.',
+          parameters: {
+            type: 'object',
+            properties: {
+              testResults: {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: {
+                    questionId: {
+                      type: 'number',
+                      description: 'The unique id of the question.',
+                    },
+                    feedback: {
+                      type: 'string',
+                      description: 'Feedback given on the students answer.',
+                    },
+                    marks: {
+                      type: 'number',
+                      description:
+                        'Marks given for the answer. Minimum:0 Maximum:100',
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      ],
       model: 'gpt-3.5-turbo',
       max_tokens: 400,
     })
 
     console.log(
-      'chatCompletion.choices[0].message.content',
-      chatCompletion.choices[0].message.content,
+      'chatCompletion.choices[0].message.function_call.arguments',
+      chatCompletion.choices[0].message.function_call.arguments,
     )
-    const result = JSON.parse(chatCompletion.choices[0].message.content)
+    const result = JSON.parse(
+      chatCompletion.choices[0].message.function_call.arguments,
+    )
     console.log('chatCompletion... ', result)
-    return result
+    return result.testResults
   }
 
   async takeTest({ courseInfo }: { courseInfo: string }) {

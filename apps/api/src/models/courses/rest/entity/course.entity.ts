@@ -4,6 +4,8 @@ import { RestrictProperties } from 'src/common/dtos/common.input'
 
 export class CourseEntity implements RestrictProperties<CourseEntity, Course> {
   @IsOptional()
+  image: string
+  @IsOptional()
   published: boolean
   id: number
   createdAt: Date

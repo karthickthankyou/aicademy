@@ -63,6 +63,7 @@ query courses(
     chaptersLength
     createdAt
     published
+    image
   }
 }
 
@@ -110,6 +111,7 @@ query course($where: CourseWhereUniqueInput!) {
       id
       title
     }
+    image
     description
     id
     title
@@ -177,6 +179,7 @@ query myTests(
 ) {
   myTests(skip: $skip, take: $take, orderBy: $orderBy, where: $where) {
     aiTotalScore
+    createdAt
     course {
       title
     }

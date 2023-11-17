@@ -8,10 +8,10 @@ export interface IUserCardProps extends BaseComponent {
 export const StudentTestCard = ({ test }: IUserCardProps) => {
   return (
     <div>
-      <h3 className="text-lg font-semibold">{test.course.title}</h3>
+      {/* <h3 className="text-lg font-semibold">{test.course.title}</h3>
       <p className="text-sm text-gray-600">
         AI Total Score: {test.aiTotalScore || 'N/A'}
-      </p>
+      </p> */}
 
       <div className="max-w-md mt-2">
         <h4 className="font-semibold text-md">Results</h4>

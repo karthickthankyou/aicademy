@@ -13,6 +13,8 @@ export class CourseOrderByWithRelationInputStrict
       Prisma.CourseOrderByWithRelationInput
     >
 {
+  @Field(() => Prisma.SortOrder)
+  image: Prisma.SortOrder
   tests: TestOrderByRelationAggregateInput
   @Field(() => Prisma.SortOrder)
   published: Prisma.SortOrder

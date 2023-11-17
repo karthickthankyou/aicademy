@@ -17,6 +17,6 @@ export default async function CoursePagePage({
   if (!course.data?.course) {
     return <div>Course not found.</div>
   }
-
+  console.log('course ', course)
   return <CoursePage course={course.data.course} />
 }

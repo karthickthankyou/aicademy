@@ -5,7 +5,7 @@ import { CreateChapterInputWithoutCourseId } from 'src/models/chapters/graphql/d
 @InputType()
 export class CreateCourseInput extends PickType(
   Course,
-  ['adminUid', 'description', 'title', 'published'],
+  ['adminUid', 'description', 'title', 'published', 'image'],
   InputType,
 ) {
   chapters: CreateChapterInputWithoutCourseId[]

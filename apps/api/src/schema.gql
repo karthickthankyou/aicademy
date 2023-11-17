@@ -40,6 +40,7 @@ type Admin {
 }
 
 type Course {
+  image: String
   published: Boolean
   description: String
   createdAt: DateTime!
@@ -249,6 +250,7 @@ input CourseRelationFilter {
 }
 
 input CourseWhereInput {
+  image: StringFilter
   tests: TestListRelationFilter
   published: BoolFilter
   createdAt: DateTimeFilter
@@ -433,11 +435,13 @@ enum CourseScalarFieldEnum {
   updatedAt
   title
   description
+  image
   adminUid
   published
 }
 
 input CourseOrderByWithRelationInput {
+  image: SortOrder
   published: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
@@ -650,6 +654,7 @@ input UpdateAdminInput {
 }
 
 input CreateCourseInput {
+  image: String
   published: Boolean
   description: String
   title: String!
@@ -670,6 +675,7 @@ input CreateQuestionInputWithoutChapterId {
 }
 
 input UpdateCourseInput {
+  image: String
   published: Boolean
   description: String
   title: String

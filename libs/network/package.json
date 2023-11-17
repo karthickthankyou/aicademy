@@ -18,6 +18,7 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "firebase": "^10.6.0",
     "graphql": "^16.8.1"
   }
 }
